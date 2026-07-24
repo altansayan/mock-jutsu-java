@@ -121,21 +121,34 @@ String name = MockJutsu.fullname()
     .generate();
 ```
 
-### Masker — regulation-compliant
+### Masker — 1. Mevcut Değeri Maskeleme
 
 ```java
 // PCI DSS (6-digit BIN visible + last 4)
-MockJutsu.masker(DataType.CARDNUM,       "4532015112830366");          // → "4532 01****** 0366"
+MockJutsu.masker(DataType.CARDNUM,       "4532015112830366");             // → "4532 01****** 0366"
 
 // ISO/IEC 7812:2017 — 8-digit BIN masking
-MockJutsu.masker(DataType.CARDNUM_BIN8,  "4532015112830366");          // → "4532 0151 **** 0366"
+MockJutsu.masker(DataType.CARDNUM_BIN8,  "4532015112830366");             // → "4532 0151 **** 0366"
 
 // KVKK / GDPR
-MockJutsu.masker(DataType.TCKN,         "12345678901");                // → "12*******01"
-MockJutsu.masker(DataType.IBAN,         "TR330006100519786457841326"); // → "TR33 **** **** **** **** 1326"
-MockJutsu.masker(DataType.EMAIL,        "john@example.com");           // → "jo***@example.com"
-MockJutsu.masker(DataType.PHONE,        "+905321234567");              // → "+90 *** *** ** 67"
+MockJutsu.masker(DataType.TCKN,         "12345678901");                   // → "12*******01"
+MockJutsu.masker(DataType.IBAN,         "TR330006100519786457841326");    // → "TR33 **** **** **** **** 1326"
+MockJutsu.masker(DataType.EMAIL,        "john@example.com");              // → "jo***@example.com"
+MockJutsu.masker(DataType.PHONE,        "+905321234567");                 // → "+90 *** *** ** 67"
 MockJutsu.masker(DataType.ADDRESS_FULL, "Bağdat Caddesi No:45 Kadıköy"); // → "B*** C*** N*** K***"
+```
+
+### Masker — 2. Direkt Maskeleme (Üret + Maskele)
+
+```java
+// Algoritmik olarak geçerli veri üretir, sonra maskeler — CLI --mask ile birebir aynı
+MockJutsu.generateMasked(DataType.CARDNUM,       TR); // → "4532 01****** 0366"   (PCI DSS)
+MockJutsu.generateMasked(DataType.TCKN,          TR); // → "47*******83"          (KVKK)
+MockJutsu.generateMasked(DataType.IBAN,          DE); // → "DE89 **** **** **** 1326" (SEPA)
+MockJutsu.generateMasked(DataType.EMAIL,         TR); // → "jo***@example.com"    (GDPR)
+MockJutsu.generateMasked(DataType.PHONE,         TR); // → "+90 *** *** ** 67"    (E.164)
+MockJutsu.generateMasked(DataType.ADDRESS_FULL,  TR); // → "A*** S*** 1*** K***"  (GDPR)
+MockJutsu.generateMasked(DataType.SSN,           US); // → "***-**-6789"          (GLBA)
 ```
 
 ---
