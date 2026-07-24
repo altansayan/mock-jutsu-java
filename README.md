@@ -7,7 +7,7 @@
 
 **Zero-dependency** Java library for generating realistic mock data - 390+ types across identity, financial, telecom, health, IoT, cryptography, and more.
 
-Generate all the realistic mock data you need for your Java and Java test projects — Unit Tests, Integration Tests, and Test Automation — with a single library. National IDs, card numbers, IBANs, JWTs, IP addresses, medical records, IoT messages, and more: 390+ data types, zero external dependencies, algorithmically verified outputs.
+Generate all the realistic mock data you need for your Java and Java test projects (Unit Tests, Integration Tests, and Test Automation) with a single library. National IDs, card numbers, IBANs, JWTs, IP addresses, medical records, IoT messages, and more: 390+ data types, zero external dependencies, algorithmically verified outputs.
 
 Java port of [Mock Jutsu](https://github.com/altansayan/mock-jutsu-api) (Python/PyPI).
 
