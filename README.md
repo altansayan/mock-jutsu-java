@@ -125,6 +125,7 @@ String tckn  = MockJutsu.generate(DataType.TCKN,     MockJutsuLocale.TR);
 ```java
 import static io.github.altansayan.mockjutsu.enums.MockJutsuLocale.*;
 import static io.github.altansayan.mockjutsu.enums.Network.*;
+import static io.github.altansayan.mockjutsu.enums.Gender.*;
 
 // Card number
 String card = MockJutsu.cardnum()
@@ -145,7 +146,7 @@ List<String> ibanList = MockJutsu.iban()
 // Full name with gender
 String name = MockJutsu.fullname()
     .locale(TR)
-    .gender("M")
+    .gender(MALE)
     .generate();
 ```
 
