@@ -183,9 +183,11 @@ Generated data is **entirely synthetic** and for development/testing environment
 
 ## 💝 Support Mock Jutsu
 
+<div align="center">
+
 Mock Jutsu is **free and open-source**. If it saved you hours of test data setup, consider buying me a coffee ☕
 
-> *"Every cup of coffee = one more data type."* 🥷
+*"Every cup of coffee = one more data type."* 🥷
 
 | Network | Address |
 |---------|---------|
@@ -198,3 +200,5 @@ Mock Jutsu is **free and open-source**. If it saved you hours of test data setup
 If mock-jutsu-java saved you from debugging a "valid-looking but broken" test ID, please leave a ⭐!
 
 Released under the [MIT License](LICENSE) • Copyright © 2026 [Altan Sezer Ayan — A.S.A](https://github.com/altansayan)
+
+</div>
