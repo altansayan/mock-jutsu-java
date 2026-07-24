@@ -1,7 +1,7 @@
 # Mock Jutsu Core - Java
 
 [![Build](https://github.com/altansayan/mock-jutsu-java/actions/workflows/build.yml/badge.svg)](https://github.com/altansayan/mock-jutsu-java/actions)
-[![Maven Central](https://img.shields.io/maven-central/v/io.github.altansayan/mockjutsu-core?label=Maven%20Central)](https://central.sonatype.com/artifact/io.github.altansayan/mockjutsu-core)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.altansayan/mockjutsu?label=Maven%20Central)](https://central.sonatype.com/artifact/io.github.altansayan/mockjutsu)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Java 17+](https://img.shields.io/badge/Java-17%2B-blue)](https://adoptium.net/)
 
@@ -28,7 +28,7 @@ Java implementation of [Mock Jutsu](https://github.com/altansayan/mock-jutsu-api
 ```xml
 <dependency>
   <groupId>io.github.altansayan</groupId>
-  <artifactId>mockjutsu-core</artifactId>
+  <artifactId>mockjutsu</artifactId>
   <version>1.0.0</version>
 </dependency>
 ```
@@ -45,7 +45,7 @@ Make sure your `pom.xml` targets Java 17+:
 ### Gradle
 
 ```groovy
-implementation 'io.github.altansayan:mockjutsu-core:1.0.0'
+implementation 'io.github.altansayan:mockjutsu:1.0.0'
 ```
 
 Make sure your `build.gradle` targets Java 17+:
