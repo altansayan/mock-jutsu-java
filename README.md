@@ -13,6 +13,14 @@ Java port of [Mock Jutsu](https://github.com/altansayan/mock-jutsu-api) (Python/
 
 ## Installation
 
+### Requirements
+
+| Tool | Minimum Version |
+|------|----------------|
+| Java | 17+ |
+| Maven | 3.8+ |
+| Gradle | 7.0+ |
+
 ### Maven
 
 ```xml
@@ -23,10 +31,28 @@ Java port of [Mock Jutsu](https://github.com/altansayan/mock-jutsu-api) (Python/
 </dependency>
 ```
 
+Make sure your `pom.xml` targets Java 17+:
+
+```xml
+<properties>
+  <maven.compiler.source>17</maven.compiler.source>
+  <maven.compiler.target>17</maven.compiler.target>
+</properties>
+```
+
 ### Gradle
 
 ```groovy
 implementation 'io.github.altansayan:mockjutsu-core:1.0.0'
+```
+
+Make sure your `build.gradle` targets Java 17+:
+
+```groovy
+java {
+  sourceCompatibility = JavaVersion.VERSION_17
+  targetCompatibility = JavaVersion.VERSION_17
+}
 ```
 
 ---
