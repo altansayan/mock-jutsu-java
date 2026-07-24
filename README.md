@@ -1,4 +1,4 @@
-# MockJutsu Core - Java
+# Mock Jutsu Core - Java
 
 [![Build](https://github.com/altansayan/mock-jutsu-java/actions/workflows/build.yml/badge.svg)](https://github.com/altansayan/mock-jutsu-java/actions)
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.altansayan/mockjutsu-core?label=Maven%20Central)](https://central.sonatype.com/artifact/io.github.altansayan/mockjutsu-core)
