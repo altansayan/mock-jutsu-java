@@ -28,7 +28,7 @@
  * String card = MockJutsu.cardnum().locale(TR).network(VISA).generate();
  *
  * // Masking
- * String masked = MockJutsu.mask("cardnum", "4532015112830366"); // → "4532 01****** 0366"
+ * String masked = MockJutsu.masker("cardnum", "4532015112830366"); // → "4532 01****** 0366"
  * }</pre>
  *
  * <p>Supports 390+ data types across identity, financial, telecom, health, IoT, cryptography, and more.

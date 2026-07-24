@@ -266,6 +266,22 @@ public final class Masker {
         return m.find() ? m.group(1) + "-****" : maskAlphanum(v, 8, 0);
     }
 
+    private static String maskDicomUid(String v) {
+        String[] parts = v.split("\\.");
+        if (parts.length <= 3) return v;
+        return String.join(".", parts[0], parts[1], parts[2]) + ".*****";
+    }
+
+    private static String maskIso8583(String v) {
+        Matcher m = Pattern.compile("(?<=DE002:)\\d+").matcher(v);
+        if (!m.find()) return v;
+        StringBuffer sb = new StringBuffer();
+        m.reset();
+        while (m.find()) m.appendReplacement(sb, maskCardnum(m.group()));
+        m.appendTail(sb);
+        return sb.toString();
+    }
+
     // ── Main dispatcher ───────────────────────────────────────────────────────
 
     /**
@@ -309,7 +325,7 @@ public final class Masker {
             case "balance"                  -> maskBalance(value);
             case "credit_score"             -> value.isEmpty() ? value : value.charAt(0) + "*".repeat(value.length() - 1);
             case "tckn", "ykn"              -> maskTckn(value);
-            case "vkn", "taxid"             -> maskVkn(value);
+            case "vkn", "taxid", "insurance_id" -> maskVkn(value);
             case "sgk"                      -> maskSgk(value);
             case "mersis"                   -> maskAlphanum(value, 4, 4);
             case "ssn"                      -> maskSsn(value);
@@ -322,7 +338,8 @@ public final class Masker {
             case "paye"                     -> maskAlphanum(value, 4, 3);
             case "sort_code"                -> value.replaceAll("\\d{2}", "**");
             case "de_idnr"                  -> maskDigits(digitsOnly(value), 4, 4);
-            case "de_stnr", "rvn"           -> maskAlphanum(value, 3, 2);
+            case "de_stnr"                  -> maskAlphanum(value, 3, 2);
+            case "rvn"                      -> maskAlphanum(value, 4, 4);
             case "inn", "inn_individual"    -> maskDigits(digitsOnly(value), 3, 3);
             case "snils"                    -> maskAlphanum(value, 3, 2);
             case "passport", "license"      -> maskPassport(value);
@@ -341,6 +358,8 @@ public final class Masker {
                 yield "***" + (value.length() >= 2 ? value.substring(value.length() - 2) : value);
             }
             case "phone_area", "phone_country" -> value;
+            case "address_full", "address_street" -> maskName(value);
+            case "address_city"             -> value;
             case "postalcode"               -> {
                 yield (value.length() >= 2 ? value.substring(0, 2) : value) + "***";
             }
@@ -350,6 +369,9 @@ public final class Masker {
             case "imsi"                     -> maskDigits(digitsOnly(value), 5, 4);
             case "icd10"                    -> value.replaceAll("\\d", "*");
             case "bmi", "height", "weight"  -> value.replaceAll("\\d", "*");
+            case "bloodtype", "blood_type"  -> value;
+            case "fhir_patient"             -> value.replaceAll("\"(family|given|text|value)\"\\s*:\\s*\"[^\"]{2,}\"", "\"$1\":\"***\"");
+            case "dicom_uid"                -> maskDicomUid(value);
             case "hl7_message"              -> value.replaceAll("(?<=\\|)[^|]{4,}", "****");
             case "ipv4", "public_ip"        -> maskIpv4(value);
             case "mac_address"              -> maskMac(value);
@@ -370,6 +392,7 @@ public final class Masker {
             case "vin"                      -> value.length() == 17
                 ? value.substring(0, 9) + "****" + value.substring(13)
                 : maskAlphanum(value, 4, 4);
+            case "vehicle"                  -> value.replaceAll("['\"]vin['\"]\\s*:\\s*['\"]([^'\"]{5,})['\"]", "\"vin\":\"****\"");
             case "order_id"                 -> value.length() > 10
                 ? value.substring(0, 6) + "****" + value.substring(value.length() - 4)
                 : value;
@@ -379,14 +402,22 @@ public final class Masker {
                 : value;
             case "iata_ticket"              -> maskDigits(digitsOnly(value), 3, 3);
             case "sessionid", "deviceid"    -> maskSessionId(value);
+            case "iso8583_auth_request",
+                 "iso8583_auth_response",
+                 "iso8583_reversal"         -> maskIso8583(value);
+            case "emv_atc"                  -> value.length() >= 4 ? "**" + value.substring(value.length() - 2) : "****";
+            case "emv_iad"                  -> value.length() >= 12 ? value.substring(0, 4) + "****" + value.substring(value.length() - 4) : maskPciSad(value);
+            case "atm_session", "pos_receipt" -> value;
             case "oidc_token"               -> value.length() > 14
                 ? value.substring(0, 10) + "***." + value.substring(value.length() - 4)
                 : "eyJ***";
+            case "oidc_token_set"           -> value.replaceAll("\"token\":\\s*\"eyJ[^\"]+", "\"token\":\"eyJ***");
             case "mnemonic"                 -> {
                 String[] words = value.split("\\s+");
                 yield words.length > 0 ? words[0] + " *** *** ... ***" : value;
             }
             case "psd2_consent"             -> value.length() > 12 ? value.substring(0, 12) + "***" : value;
+            case "swift_mt103"              -> value.replaceAll("/ACC[A-Z0-9]+", "/ACC****");
             case "br_cpf"                   -> maskDigits(digitsOnly(value), 3, 2);
             case "br_cnpj"                  -> maskAlphanum(value, 4, 4);
             case "in_pan"                   -> value.length() >= 6

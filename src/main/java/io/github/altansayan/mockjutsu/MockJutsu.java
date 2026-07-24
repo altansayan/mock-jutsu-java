@@ -45,10 +45,11 @@ import java.util.List;
  *
  * <h2>Masker</h2>
  * <pre>{@code
- * MockJutsu.mask("cardnum",   "4532015112830366"); // → "4532 01****** 0366"  (PCI DSS)
- * MockJutsu.mask("tckn",     "12345678901");       // → "12*******01"         (KVKK)
- * MockJutsu.mask("email",    "john@example.com");  // → "jo***@example.com"   (GDPR)
- * MockJutsu.mask("iban",     "TR330006100519786"); // → "TR33 **** ... 6"     (SEPA/PSD2)
+ * MockJutsu.masker(DataType.CARDNUM,       "4532015112830366");          // → "4532 01****** 0366"  (PCI DSS)
+ * MockJutsu.masker(DataType.TCKN,         "12345678901");                // → "12*******01"         (KVKK)
+ * MockJutsu.masker(DataType.EMAIL,        "john@example.com");           // → "jo***@example.com"   (GDPR)
+ * MockJutsu.masker(DataType.IBAN,         "TR330006100519786");          // → "TR33 **** ... 6"     (SEPA/PSD2)
+ * MockJutsu.masker(DataType.ADDRESS_FULL, "Bağdat Caddesi No:45");       // → "B*** C*** N***"      (GDPR)
  * }</pre>
  *
  * @author Altan Sezer Ayan
@@ -762,7 +763,7 @@ public final class MockJutsu {
      * Returns a regulation-compliant masked value using a typed {@link DataType} enum constant.
      *
      * <pre>{@code
-     * String masked = MockJutsu.mask(DataType.CARDNUM, "4532015112830366");
+     * String masked = MockJutsu.masker(DataType.CARDNUM, "4532015112830366");
      * }</pre>
      *
      * @param type  the data type enum constant
@@ -770,8 +771,47 @@ public final class MockJutsu {
      * @return the masked value, or the original value if no masking rule exists
      * @since 1.0.0
      */
-    public static String mask(DataType type, String value) {
+    public static String masker(DataType type, String value) {
         return Masker.mask(type.key(), value);
+    }
+
+    // ── Generate + Mask ──────────────────────────────────────────────────────
+
+    /**
+     * Generates a mock value and immediately masks it — equivalent to CLI {@code --mask} flag.
+     *
+     * <p>Combines {@link #generate(DataType, MockJutsuLocale)} and {@link #mask(String, String)}
+     * in a single call. The generated value is algorithmically valid before masking.
+     *
+     * <p>Example:
+     * <pre>{@code
+     * MockJutsu.generateMasked(DataType.TCKN,    TR);  // → "47*******83"   (KVKK)
+     * MockJutsu.generateMasked(DataType.CARDNUM, TR);  // → "4532 01****** 0366"  (PCI DSS)
+     * MockJutsu.generateMasked(DataType.IBAN,    DE);  // → "DE89 **** **** **** 1326"  (SEPA)
+     * MockJutsu.generateMasked(DataType.EMAIL,   TR);  // → "jo***@example.com"  (GDPR)
+     * }</pre>
+     *
+     * @param type   the data type enum constant
+     * @param locale the locale enum constant; defaults to {@code US} when {@code null}
+     * @return a masked version of a freshly generated value
+     * @since 1.0.0
+     */
+    public static String generateMasked(DataType type, MockJutsuLocale locale) {
+        String value = Registry.generate(type.key(), locale == null ? "US" : locale.code());
+        return Masker.mask(type.key(), value);
+    }
+
+    /**
+     * Generates a mock value and immediately masks it using a string type key.
+     *
+     * @param type   the type key string (e.g. {@code "tckn"}, {@code "cardnum"})
+     * @param locale the locale string (e.g. {@code "TR"}, {@code "US"})
+     * @return a masked version of a freshly generated value
+     * @since 1.0.0
+     */
+    public static String generateMasked(String type, String locale) {
+        String value = Registry.generate(type, locale == null ? "US" : locale);
+        return Masker.mask(type, value);
     }
 
     // ── Masker ────────────────────────────────────────────────────────────────
@@ -796,7 +836,7 @@ public final class MockJutsu {
      * @return the masked value, or the original value if no masking rule exists for the type
      * @since 1.0.0
      */
-    public static String mask(String type, String value) {
+    public static String masker(String type, String value) {
         return Masker.mask(type, value);
     }
 

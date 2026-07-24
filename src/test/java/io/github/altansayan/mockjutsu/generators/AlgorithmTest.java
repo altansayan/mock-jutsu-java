@@ -365,20 +365,20 @@ class AlgorithmTest {
 
     @Test
     void maskerCardnum() {
-        String masked = MockJutsu.mask("cardnum", "4532015112830366");
+        String masked = MockJutsu.masker("cardnum", "4532015112830366");
         assertTrue(masked.contains("*"), "Cardnum should be masked");
         assertTrue(masked.startsWith("4532"), "Cardnum should show first 6 digits (BIN)");
     }
 
     @Test
     void maskerCardnumBin8() {
-        String masked = MockJutsu.mask("cardnum_bin8", "4532015112830366");
+        String masked = MockJutsu.masker("cardnum_bin8", "4532015112830366");
         assertTrue(masked.startsWith("4532 0151"), "Cardnum BIN8 should show first 8 digits");
     }
 
     @Test
     void maskerEmail() {
-        String masked = MockJutsu.mask("email", "john.doe@example.com");
+        String masked = MockJutsu.masker("email", "john.doe@example.com");
         assertTrue(masked.contains("***@example.com"));
     }
 

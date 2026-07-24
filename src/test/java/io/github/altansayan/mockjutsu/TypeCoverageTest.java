@@ -268,7 +268,7 @@ class TypeCoverageTest {
         bulk.forEach(v -> assertFalse(v.startsWith("ERROR:")));
 
         // mask(DataType, String)
-        String masked = MockJutsu.mask(DataType.CARDNUM, "4532015112830366");
+        String masked = MockJutsu.masker(DataType.CARDNUM, "4532015112830366");
         assertFalse(masked.startsWith("ERROR:"));
         assertTrue(masked.contains("*"));
     }
