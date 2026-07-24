@@ -1,7 +1,11 @@
 package io.github.altansayan.mockjutsu;
 
+import io.github.altansayan.mockjutsu.enums.Carrier;
+import io.github.altansayan.mockjutsu.enums.ColorFormat;
+import io.github.altansayan.mockjutsu.enums.CryptoCurrency;
 import io.github.altansayan.mockjutsu.enums.DataType;
 import io.github.altansayan.mockjutsu.enums.Gender;
+import io.github.altansayan.mockjutsu.enums.HashAlgorithm;
 import io.github.altansayan.mockjutsu.enums.MockJutsuLocale;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -356,5 +360,299 @@ class TypeCoverageTest {
     void mnemonicBuilderWords24() {
         String phrase = MockJutsu.mnemonic().words(24).generate();
         assertEquals(24, phrase.split("\\s+").length, "24-word mnemonic word count: " + phrase);
+    }
+
+    // ── HashAlgorithm enum overload ───────────────────────────────────────────
+
+    @Test
+    void hashAlgorithmEnumOverload() {
+        for (HashAlgorithm algo : HashAlgorithm.values()) {
+            String h = MockJutsu.generate(DataType.HASH, MockJutsuLocale.US, algo);
+            assertFalse(h.startsWith("ERROR:"), "HASH " + algo + " error: " + h);
+            assertFalse(h.isBlank(), "HASH " + algo + " is blank");
+        }
+    }
+
+    @Test
+    void hashBuilderAlgorithm() {
+        String sha256 = MockJutsu.hash().algorithm(HashAlgorithm.SHA256).generate();
+        assertEquals(64, sha256.length(), "SHA-256 should be 64 hex chars: " + sha256);
+
+        String md5 = MockJutsu.hash().algorithm(HashAlgorithm.MD5).generate();
+        assertEquals(32, md5.length(), "MD5 should be 32 hex chars: " + md5);
+
+        String crc32 = MockJutsu.hash().algorithm(HashAlgorithm.CRC32).generate();
+        assertEquals(8, crc32.length(), "CRC32 should be 8 hex chars: " + crc32);
+    }
+
+    // ── ColorFormat enum overload ─────────────────────────────────────────────
+
+    @Test
+    void colorFormatEnumOverload() {
+        String hex  = MockJutsu.generate(DataType.COLOR, MockJutsuLocale.US, ColorFormat.HEX);
+        String rgb  = MockJutsu.generate(DataType.COLOR, MockJutsuLocale.US, ColorFormat.RGB);
+        String hsl  = MockJutsu.generate(DataType.COLOR, MockJutsuLocale.US, ColorFormat.HSL);
+        String name = MockJutsu.generate(DataType.COLOR, MockJutsuLocale.US, ColorFormat.NAME);
+
+        assertTrue(hex.startsWith("#"), "HEX color should start with #: " + hex);
+        assertTrue(rgb.startsWith("rgb("), "RGB color format: " + rgb);
+        assertTrue(hsl.startsWith("hsl("), "HSL color format: " + hsl);
+        assertFalse(name.isBlank(), "NAME color is blank");
+    }
+
+    @Test
+    void colorBuilderFormat() {
+        String hsl = MockJutsu.color().format(ColorFormat.HSL).generate();
+        assertTrue(hsl.startsWith("hsl("), "ColorBuilder HSL: " + hsl);
+    }
+
+    // ── Carrier enum overload ─────────────────────────────────────────────────
+
+    @Test
+    void carrierEnumOverload() {
+        for (Carrier c : Carrier.values()) {
+            String t = MockJutsu.generate(DataType.TRACKING_NUMBER, MockJutsuLocale.US, c);
+            assertFalse(t.startsWith("ERROR:"), "tracking_number " + c + " error: " + t);
+            assertFalse(t.isBlank(), "tracking_number " + c + " is blank");
+        }
+    }
+
+    @Test
+    void trackingNumberBuilderCarrier() {
+        String fedex = MockJutsu.trackingNumber().carrier(Carrier.FEDEX).generate();
+        assertFalse(fedex.startsWith("ERROR:"), "FEDEX tracking: " + fedex);
+        assertFalse(fedex.isBlank());
+
+        String ups = MockJutsu.trackingNumber().carrier(Carrier.UPS).generate();
+        assertTrue(ups.startsWith("1Z"), "UPS tracking should start with 1Z: " + ups);
+    }
+
+    // ── CryptoCurrency enum overload ──────────────────────────────────────────
+
+    @Test
+    void cryptoCurrencyEnumOverload() {
+        String btcAddr = MockJutsu.generate(DataType.CRYPTO_ADDRESS, MockJutsuLocale.US, CryptoCurrency.BTC);
+        String ethAddr = MockJutsu.generate(DataType.CRYPTO_ADDRESS, MockJutsuLocale.US, CryptoCurrency.ETH);
+
+        // BTC P2PKH starts with 1, P2SH with 3
+        assertTrue(btcAddr.startsWith("1") || btcAddr.startsWith("3"),
+            "BTC address format: " + btcAddr);
+        assertTrue(ethAddr.startsWith("0x"), "ETH address should start with 0x: " + ethAddr);
+
+        String btcTx = MockJutsu.generate(DataType.TX_HASH, MockJutsuLocale.US, CryptoCurrency.BTC);
+        String ethTx = MockJutsu.generate(DataType.TX_HASH, MockJutsuLocale.US, CryptoCurrency.ETH);
+        assertFalse(btcTx.isBlank());
+        assertTrue(ethTx.startsWith("0x"), "ETH tx hash format: " + ethTx);
+    }
+
+    @Test
+    void cryptoAddressBuilderCurrency() {
+        String eth = MockJutsu.cryptoAddress().currency(CryptoCurrency.ETH).generate();
+        assertTrue(eth.startsWith("0x"), "CryptoAddressBuilder ETH: " + eth);
+    }
+
+    // ── BalanceBuilder ────────────────────────────────────────────────────────
+
+    @Test
+    void balanceBuilderDefault() {
+        String b = MockJutsu.balance().generate();
+        assertFalse(b.startsWith("ERROR:"), "balance default: " + b);
+        assertFalse(b.isBlank());
+    }
+
+    @Test
+    void balanceBuilderRange() {
+        String b = MockJutsu.balance().min(100).max(500).generate();
+        assertFalse(b.startsWith("ERROR:"), "balance range: " + b);
+    }
+
+    // ── DateRangeBuilder ──────────────────────────────────────────────────────
+
+    @Test
+    void dateRangeBuilderDefault() {
+        String d = MockJutsu.dateRange().generate();
+        assertFalse(d.startsWith("ERROR:"), "dateRange default: " + d);
+    }
+
+    @Test
+    void dateRangeBuilderWithRange() {
+        String d = MockJutsu.dateRange().from("2020-01-01").to("2025-12-31").generate();
+        assertFalse(d.startsWith("ERROR:"), "dateRange with range: " + d);
+        assertFalse(d.isBlank());
+    }
+
+    // ── AiVectorBuilder ───────────────────────────────────────────────────────
+
+    @Test
+    void aiEmbeddingBuilderDefault() {
+        String e = MockJutsu.aiEmbedding().generate();
+        assertFalse(e.startsWith("ERROR:"), "aiEmbedding default: " + e);
+        assertTrue(e.startsWith("["), "ai_embedding should be JSON array: " + e.substring(0, Math.min(20,e.length())));
+    }
+
+    @Test
+    void aiVectorBuilderDims() {
+        String v = MockJutsu.aiVector().dims(128).generate();
+        assertFalse(v.startsWith("ERROR:"), "aiVector 128 dims: " + v);
+        // 128 floats in JSON array = 128 commas-separated values
+        long commas = v.chars().filter(c -> c == ',').count();
+        assertEquals(127, commas, "ai_vector dims=128 should have 127 commas");
+    }
+
+    // ── AiSparseVectorBuilder ─────────────────────────────────────────────────
+
+    @Test
+    void aiSparseVectorBuilderDefault() {
+        String s = MockJutsu.aiSparseVector().generate();
+        assertFalse(s.startsWith("ERROR:"), "aiSparseVector default: " + s);
+        assertTrue(s.startsWith("{"), "ai_sparse_vector should be JSON object: " + s.substring(0, Math.min(20,s.length())));
+    }
+
+    @Test
+    void aiSparseVectorBuilderCustom() {
+        String s = MockJutsu.aiSparseVector().dims(1000).nnz(32).generate();
+        assertFalse(s.startsWith("ERROR:"), "aiSparseVector custom: " + s);
+    }
+
+    // ── PatternBuilder ────────────────────────────────────────────────────────
+
+    @Test
+    void patternBuilderReverseRegex() {
+        String s = MockJutsu.reverseRegex().pattern("[A-Z]{3}-\\d{4}").generate();
+        assertFalse(s.startsWith("ERROR:"), "reverseRegex pattern: " + s);
+        assertFalse(s.isBlank());
+    }
+
+    // ── SignatureBuilder ──────────────────────────────────────────────────────
+
+    @Test
+    void signatureBuilderDefault() {
+        String sig = MockJutsu.signature().generate();
+        assertFalse(sig.startsWith("ERROR:"), "signature default: " + sig);
+        assertFalse(sig.isBlank());
+    }
+
+    @Test
+    void signatureBuilderWithSecretAndPayload() {
+        String sig = MockJutsu.signature().secret("my-key").payload("{\"amount\":100}").generate();
+        assertFalse(sig.startsWith("ERROR:"), "signature with secret+payload: " + sig);
+        assertFalse(sig.isBlank());
+    }
+
+    // ── StrictPaymentBuilder ──────────────────────────────────────────────────
+
+    @Test
+    void strictPaymentBuilderSwiftMt103() {
+        String mt103 = MockJutsu.swiftMt103().locale(MockJutsuLocale.TR).generate();
+        assertFalse(mt103.startsWith("ERROR:"), "swiftMt103 default: " + mt103);
+        assertFalse(mt103.isBlank());
+    }
+
+    @Test
+    void strictPaymentBuilderSwiftMt103Strict() {
+        String mt103 = MockJutsu.swiftMt103().locale(MockJutsuLocale.TR).strict().generate();
+        assertFalse(mt103.startsWith("ERROR:"), "swiftMt103 strict: " + mt103);
+    }
+
+    @Test
+    void strictPaymentBuilderPain001() {
+        String pain = MockJutsu.pain001().strict(true).generate();
+        assertFalse(pain.startsWith("ERROR:"), "pain001 strict: " + pain);
+        assertTrue(pain.contains("<?xml"), "pain001 should be XML: " + pain.substring(0, Math.min(50, pain.length())));
+    }
+
+    @Test
+    void strictPaymentBuilderSepaMandate() {
+        String m = MockJutsu.sepaMandate().strict().generate();
+        assertFalse(m.startsWith("ERROR:"), "sepaMandate strict: " + m);
+    }
+
+    // ── ForexRateBuilder ──────────────────────────────────────────────────────
+
+    @Test
+    void forexRateBuilderDefault() {
+        String r = MockJutsu.forexRate().generate();
+        assertFalse(r.startsWith("ERROR:"), "forexRate default: " + r);
+        assertFalse(r.isBlank());
+    }
+
+    @Test
+    void forexRateBuilderPair() {
+        String r = MockJutsu.forexRate().pair("EUR/USD").generate();
+        assertFalse(r.startsWith("ERROR:"), "forexRate EUR/USD: " + r);
+        assertTrue(r.contains("EUR") || r.contains("."), "forexRate should contain pair info or decimal: " + r);
+    }
+
+    // ── Psd2ConsentBuilder ────────────────────────────────────────────────────
+
+    @Test
+    void psd2ConsentBuilderDefault() {
+        String c = MockJutsu.psd2Consent().generate();
+        assertFalse(c.startsWith("ERROR:"), "psd2Consent default: " + c);
+        assertFalse(c.isBlank());
+    }
+
+    @Test
+    void psd2ConsentBuilderAmount() {
+        // psd2_consent output is a signed JWT — amount is embedded in Base64 payload
+        String c = MockJutsu.psd2Consent().amount(9999.99).locale("DE").generate();
+        assertFalse(c.startsWith("ERROR:"), "psd2Consent with amount: " + c);
+        assertFalse(c.isBlank(), "psd2Consent with amount is blank");
+        // JWT has 3 parts separated by '.'
+        assertEquals(3, c.split("\\.").length, "psd2Consent should be a JWT (3 parts): " + c.substring(0, Math.min(30, c.length())));
+    }
+
+    // ── icd10 description qualifier ───────────────────────────────────────────
+
+    @Test
+    void icd10WithDescriptionQualifier() {
+        String withDesc = MockJutsu.generate("icd10", "TR", "desc");
+        assertFalse(withDesc.startsWith("ERROR:"), "icd10 desc error: " + withDesc);
+        assertTrue(withDesc.startsWith("{\"code\":"), "icd10 desc should be JSON: " + withDesc);
+        assertTrue(withDesc.contains("\"description\":"), "icd10 desc should have description field: " + withDesc);
+    }
+
+    @Test
+    void icd10WithoutDescriptionReturnsCodeOnly() {
+        String codeOnly = MockJutsu.generate("icd10", "TR");
+        assertFalse(codeOnly.startsWith("ERROR:"), "icd10 code only: " + codeOnly);
+        assertFalse(codeOnly.contains("{"), "icd10 without desc should not be JSON: " + codeOnly);
+    }
+
+    // ── enum of() parsing ─────────────────────────────────────────────────────
+
+    @Test
+    void hashAlgorithmOfParsing() {
+        assertEquals(HashAlgorithm.SHA256,  HashAlgorithm.of("sha256"));
+        assertEquals(HashAlgorithm.SHA256,  HashAlgorithm.of("SHA256"));
+        assertEquals(HashAlgorithm.MD5,     HashAlgorithm.of("md5"));
+        assertEquals(HashAlgorithm.SHA3_256, HashAlgorithm.of("sha3-256"));
+        assertEquals(HashAlgorithm.CRC32,   HashAlgorithm.of("crc32"));
+        assertEquals(HashAlgorithm.SHA256,  HashAlgorithm.of(null));
+        assertEquals(HashAlgorithm.SHA256,  HashAlgorithm.of("unknown"));
+    }
+
+    @Test
+    void colorFormatOfParsing() {
+        assertEquals(ColorFormat.HEX,  ColorFormat.of("hex"));
+        assertEquals(ColorFormat.RGB,  ColorFormat.of("RGB"));
+        assertEquals(ColorFormat.HSL,  ColorFormat.of("hsl"));
+        assertEquals(ColorFormat.NAME, ColorFormat.of("name"));
+        assertEquals(ColorFormat.HEX,  ColorFormat.of(null));
+    }
+
+    @Test
+    void carrierOfParsing() {
+        assertEquals(Carrier.USPS,  Carrier.of("usps"));
+        assertEquals(Carrier.UPS,   Carrier.of("UPS"));
+        assertEquals(Carrier.FEDEX, Carrier.of("fedex"));
+        assertEquals(Carrier.USPS,  Carrier.of(null));
+    }
+
+    @Test
+    void cryptoCurrencyOfParsing() {
+        assertEquals(CryptoCurrency.BTC, CryptoCurrency.of("btc"));
+        assertEquals(CryptoCurrency.ETH, CryptoCurrency.of("ETH"));
+        assertEquals(CryptoCurrency.BTC, CryptoCurrency.of(null));
     }
 }

@@ -58,12 +58,17 @@ public final class PaymentsGen {
     private static final String[] FEDWIRE_BFC = {"CTR","BTR","DEP"};
 
     public static String generate(String type, String locale) {
+        return generate(type, locale, "");
+    }
+
+    public static String generate(String type, String locale, String qualifier) {
         ThreadLocalRandom rng = ThreadLocalRandom.current();
+        boolean strict = "strict".equalsIgnoreCase(qualifier == null ? "" : qualifier.trim());
         return switch (type) {
-            case "swift_mt103"  -> mt103(rng, locale, false);
-            case "pain001"      -> pain001(rng, false);
+            case "swift_mt103"  -> mt103(rng, locale, strict);
+            case "pain001"      -> pain001(rng, strict);
             case "nacha_ach"    -> nachaAch(rng);
-            case "sepa_mandate" -> sepaMandate(rng, false);
+            case "sepa_mandate" -> sepaMandate(rng, strict);
             case "fedwire"      -> fedwire(rng);
             default -> "ERROR: Unknown payments type '" + type + "'";
         };

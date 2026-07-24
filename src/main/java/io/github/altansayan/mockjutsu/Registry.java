@@ -278,7 +278,7 @@ public final class Registry {
         if (META_TYPES.contains(type))            return MetaGen.generate(type, locale, qualifier);
         if (BANKING_TYPES.contains(type))         return BankingGen.generate(type, locale);
         if (CORPORATE_TYPES.contains(type))       return CorporateGen.generate(type, locale);
-        if (HEALTH_TYPES.contains(type))          return HealthGen.generate(type, locale);
+        if (HEALTH_TYPES.contains(type))          return HealthGen.generate(type, locale, qualifier);
         if (COMMERCE_TYPES.contains(type))        return CommerceGen.generate(type, locale);
         if (IOT_TYPES.contains(type))             return IoTGen.generate(type, locale);
         if (BARCODE_TYPES.contains(type))         return BarcodeGen.generate(type, locale);
@@ -309,7 +309,7 @@ public final class Registry {
         if (UBL_TYPES.contains(type))             return UblGen.generate(type, locale);
         if (AUTOMOTIVE_TYPES.contains(type))      return AutomotiveGen.generate(type, locale);
         if (TLE_TYPES.contains(type))             return TleGen.generate(type, locale);
-        if (PAYMENTS_TYPES.contains(type))        return PaymentsGen.generate(type, locale);
+        if (PAYMENTS_TYPES.contains(type))        return PaymentsGen.generate(type, locale, qualifier);
         if (REVERSE_REGEX_TYPES.contains(type))   return ReverseRegexGen.generate(type, locale, qualifier);
         if (INTL_IDS_TYPES.contains(type))        return IntlIdsGen.generate(type, locale);
         if (COMPLIANCE_TYPES.contains(type))      return ComplianceGen.generate(type, locale);

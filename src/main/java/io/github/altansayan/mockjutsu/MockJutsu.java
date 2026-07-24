@@ -1,7 +1,11 @@
 package io.github.altansayan.mockjutsu;
 
+import io.github.altansayan.mockjutsu.enums.Carrier;
+import io.github.altansayan.mockjutsu.enums.ColorFormat;
+import io.github.altansayan.mockjutsu.enums.CryptoCurrency;
 import io.github.altansayan.mockjutsu.enums.DataType;
 import io.github.altansayan.mockjutsu.enums.Gender;
+import io.github.altansayan.mockjutsu.enums.HashAlgorithm;
 import io.github.altansayan.mockjutsu.enums.MockJutsuLocale;
 import io.github.altansayan.mockjutsu.enums.Network;
 import io.github.altansayan.mockjutsu.masker.Masker;
@@ -230,6 +234,104 @@ public final class MockJutsu {
     }
 
     /**
+     * Generates a hash using a typed {@link HashAlgorithm} enum — no magic strings.
+     *
+     * <pre>{@code
+     * import static io.github.altansayan.mockjutsu.enums.DataType.*;
+     * import static io.github.altansayan.mockjutsu.enums.MockJutsuLocale.*;
+     * import static io.github.altansayan.mockjutsu.enums.HashAlgorithm.*;
+     *
+     * String h256 = MockJutsu.generate(HASH, US, SHA256);
+     * String md5  = MockJutsu.generate(HASH, US, MD5);
+     * }</pre>
+     *
+     * @param type      the data type enum constant; only {@link DataType#HASH} uses the algorithm
+     * @param locale    the locale enum constant
+     * @param algorithm the hash algorithm; {@code null} defaults to {@link HashAlgorithm#SHA256}
+     * @return a non-null hex-encoded hash string
+     * @since 1.0.0
+     * @see HashBuilder
+     */
+    public static String generate(DataType type, MockJutsuLocale locale, HashAlgorithm algorithm) {
+        return Registry.generate(type.key(), locale == null ? "US" : locale.code(),
+                algorithm == null ? "" : algorithm.key());
+    }
+
+    /**
+     * Generates a color value using a typed {@link ColorFormat} enum — no magic strings.
+     *
+     * <pre>{@code
+     * import static io.github.altansayan.mockjutsu.enums.DataType.*;
+     * import static io.github.altansayan.mockjutsu.enums.MockJutsuLocale.*;
+     * import static io.github.altansayan.mockjutsu.enums.ColorFormat.*;
+     *
+     * String hex = MockJutsu.generate(COLOR, US, HEX);
+     * String rgb = MockJutsu.generate(COLOR, US, RGB);
+     * }</pre>
+     *
+     * @param type   the data type enum constant; only {@link DataType#COLOR} uses the format
+     * @param locale the locale enum constant
+     * @param format the color format; {@code null} defaults to {@link ColorFormat#HEX}
+     * @return a non-null CSS color string
+     * @since 1.0.0
+     * @see ColorBuilder
+     */
+    public static String generate(DataType type, MockJutsuLocale locale, ColorFormat format) {
+        return Registry.generate(type.key(), locale == null ? "US" : locale.code(),
+                format == null ? "" : format.key());
+    }
+
+    /**
+     * Generates a tracking number using a typed {@link Carrier} enum — no magic strings.
+     *
+     * <pre>{@code
+     * import static io.github.altansayan.mockjutsu.enums.DataType.*;
+     * import static io.github.altansayan.mockjutsu.enums.MockJutsuLocale.*;
+     * import static io.github.altansayan.mockjutsu.enums.Carrier.*;
+     *
+     * String usps  = MockJutsu.generate(TRACKING_NUMBER, US, USPS);
+     * String fedex = MockJutsu.generate(TRACKING_NUMBER, US, FEDEX);
+     * }</pre>
+     *
+     * @param type    the data type enum constant; only {@link DataType#TRACKING_NUMBER} uses the carrier
+     * @param locale  the locale enum constant
+     * @param carrier the shipping carrier; {@code null} defaults to {@link Carrier#USPS}
+     * @return a non-null tracking number string in carrier-specific format
+     * @since 1.0.0
+     * @see TrackingNumberBuilder
+     */
+    public static String generate(DataType type, MockJutsuLocale locale, Carrier carrier) {
+        return Registry.generate(type.key(), locale == null ? "US" : locale.code(),
+                carrier == null ? "" : carrier.key());
+    }
+
+    /**
+     * Generates a crypto address/hash using a typed {@link CryptoCurrency} enum — no magic strings.
+     *
+     * <pre>{@code
+     * import static io.github.altansayan.mockjutsu.enums.DataType.*;
+     * import static io.github.altansayan.mockjutsu.enums.MockJutsuLocale.*;
+     * import static io.github.altansayan.mockjutsu.enums.CryptoCurrency.*;
+     *
+     * String btcAddr = MockJutsu.generate(CRYPTO_ADDRESS, US, BTC);
+     * String ethAddr = MockJutsu.generate(CRYPTO_ADDRESS, US, ETH);
+     * String ethTx   = MockJutsu.generate(TX_HASH, US, ETH);
+     * }</pre>
+     *
+     * @param type     the data type enum constant; {@link DataType#CRYPTO_ADDRESS},
+     *                 {@link DataType#TX_HASH}, or {@link DataType#BLOCK_HASH}
+     * @param locale   the locale enum constant
+     * @param currency the cryptocurrency; {@code null} defaults to {@link CryptoCurrency#BTC}
+     * @return a non-null address or hash string in the currency-specific format
+     * @since 1.0.0
+     * @see CryptoAddressBuilder
+     */
+    public static String generate(DataType type, MockJutsuLocale locale, CryptoCurrency currency) {
+        return Registry.generate(type.key(), locale == null ? "US" : locale.code(),
+                currency == null ? "" : currency.key());
+    }
+
+    /**
      * Generates a list of mock values using a typed {@link DataType} enum constant.
      *
      * <pre>{@code
@@ -439,6 +541,214 @@ public final class MockJutsu {
      * @since 1.0.0
      */
     public static MnemonicBuilder mnemonic() { return new MnemonicBuilder(); }
+
+    /**
+     * Returns a fluent builder for account balance generation with optional min/max range.
+     *
+     * <pre>{@code
+     * // Random balance (default range)
+     * String balance = MockJutsu.balance().locale("TR").generate();
+     *
+     * // Constrained range
+     * String small = MockJutsu.balance().min(100).max(5000).generate();
+     * }</pre>
+     *
+     * @return a new {@link BalanceBuilder}
+     * @since 1.0.0
+     */
+    public static BalanceBuilder balance() { return new BalanceBuilder(); }
+
+    /**
+     * Returns a fluent builder for date-between generation with optional date range.
+     *
+     * <pre>{@code
+     * String date = MockJutsu.dateRange()
+     *     .from("2020-01-01")
+     *     .to("2025-12-31")
+     *     .generate();
+     * }</pre>
+     *
+     * @return a new {@link DateRangeBuilder}
+     * @since 1.0.0
+     */
+    public static DateRangeBuilder dateRange() { return new DateRangeBuilder(); }
+
+    /**
+     * Returns a fluent builder for AI embedding vector generation with optional dimension count.
+     *
+     * <pre>{@code
+     * String emb = MockJutsu.aiEmbedding().dims(768).generate();
+     * }</pre>
+     *
+     * @return a new {@link AiVectorBuilder} for {@code "ai_embedding"}
+     * @since 1.0.0
+     */
+    public static AiVectorBuilder aiEmbedding() { return new AiVectorBuilder("ai_embedding"); }
+
+    /**
+     * Returns a fluent builder for dense AI vector generation with optional dimension count.
+     *
+     * <pre>{@code
+     * String vec = MockJutsu.aiVector().dims(1536).generate();
+     * }</pre>
+     *
+     * @return a new {@link AiVectorBuilder} for {@code "ai_vector"}
+     * @since 1.0.0
+     */
+    public static AiVectorBuilder aiVector() { return new AiVectorBuilder("ai_vector"); }
+
+    /**
+     * Returns a fluent builder for sparse AI vector generation with optional dims and nnz count.
+     *
+     * <pre>{@code
+     * String sparse = MockJutsu.aiSparseVector().dims(10000).nnz(64).generate();
+     * }</pre>
+     *
+     * @return a new {@link AiSparseVectorBuilder}
+     * @since 1.0.0
+     */
+    public static AiSparseVectorBuilder aiSparseVector() { return new AiSparseVectorBuilder(); }
+
+    /**
+     * Returns a fluent builder for reverse-regex string generation.
+     *
+     * <pre>{@code
+     * // Generate a string matching [A-Z]{3}-\d{4}
+     * String s = MockJutsu.reverseRegex().pattern("[A-Z]{3}-\\d{4}").generate();
+     * }</pre>
+     *
+     * @return a new {@link PatternBuilder}
+     * @since 1.0.0
+     */
+    public static PatternBuilder reverseRegex() { return new PatternBuilder(); }
+
+    /**
+     * Returns a fluent builder for HMAC signature generation with optional secret and payload.
+     *
+     * <pre>{@code
+     * String sig = MockJutsu.signature()
+     *     .secret("my-secret-key")
+     *     .payload("{\"event\":\"payment\"}")
+     *     .generate();
+     * }</pre>
+     *
+     * @return a new {@link SignatureBuilder}
+     * @since 1.0.0
+     */
+    public static SignatureBuilder signature() { return new SignatureBuilder(); }
+
+    /**
+     * Returns a fluent builder for SWIFT MT103 payment message generation.
+     * Use {@link StrictPaymentBuilder#strict()} to enable ISO 9362 strict BIC mode.
+     *
+     * <pre>{@code
+     * String mt103 = MockJutsu.swiftMt103().locale(TR).generate();
+     * String mt103strict = MockJutsu.swiftMt103().locale(TR).strict().generate();
+     * }</pre>
+     *
+     * @return a new {@link StrictPaymentBuilder} for {@code "swift_mt103"}
+     * @since 1.0.0
+     */
+    public static StrictPaymentBuilder swiftMt103() { return new StrictPaymentBuilder("swift_mt103"); }
+
+    /**
+     * Returns a fluent builder for ISO 20022 pain.001 payment message generation.
+     * Use {@link StrictPaymentBuilder#strict()} to enable ISO 9362 strict BIC mode.
+     *
+     * <pre>{@code
+     * String pain = MockJutsu.pain001().strict().generate();
+     * }</pre>
+     *
+     * @return a new {@link StrictPaymentBuilder} for {@code "pain001"}
+     * @since 1.0.0
+     */
+    public static StrictPaymentBuilder pain001() { return new StrictPaymentBuilder("pain001"); }
+
+    /**
+     * Returns a fluent builder for SEPA Direct Debit mandate generation.
+     * Use {@link StrictPaymentBuilder#strict()} to enable ISO 9362 strict BIC mode.
+     *
+     * <pre>{@code
+     * String mandate = MockJutsu.sepaMandate().strict().generate();
+     * }</pre>
+     *
+     * @return a new {@link StrictPaymentBuilder} for {@code "sepa_mandate"}
+     * @since 1.0.0
+     */
+    public static StrictPaymentBuilder sepaMandate() { return new StrictPaymentBuilder("sepa_mandate"); }
+
+    /**
+     * Returns a fluent builder for forex exchange rate generation with optional pair.
+     *
+     * <pre>{@code
+     * String rate = MockJutsu.forexRate().pair("EUR/USD").generate();
+     * String any  = MockJutsu.forexRate().generate(); // random pair
+     * }</pre>
+     *
+     * @return a new {@link ForexRateBuilder}
+     * @since 1.0.0
+     */
+    public static ForexRateBuilder forexRate() { return new ForexRateBuilder(); }
+
+    /**
+     * Returns a fluent builder for PSD2 consent object generation with optional amount.
+     *
+     * <pre>{@code
+     * String consent = MockJutsu.psd2Consent().amount(1234.56).locale("DE").generate();
+     * }</pre>
+     *
+     * @return a new {@link Psd2ConsentBuilder}
+     * @since 1.0.0
+     */
+    public static Psd2ConsentBuilder psd2Consent() { return new Psd2ConsentBuilder(); }
+
+    /**
+     * Returns a fluent builder for hash generation with a typed algorithm selector.
+     *
+     * <pre>{@code
+     * String h = MockJutsu.hash().algorithm(HashAlgorithm.SHA256).generate();
+     * }</pre>
+     *
+     * @return a new {@link HashBuilder}
+     * @since 1.0.0
+     */
+    public static HashBuilder hash() { return new HashBuilder(); }
+
+    /**
+     * Returns a fluent builder for color generation with a typed format selector.
+     *
+     * <pre>{@code
+     * String c = MockJutsu.color().format(ColorFormat.HSL).generate();
+     * }</pre>
+     *
+     * @return a new {@link ColorBuilder}
+     * @since 1.0.0
+     */
+    public static ColorBuilder color() { return new ColorBuilder(); }
+
+    /**
+     * Returns a fluent builder for tracking number generation with a typed carrier selector.
+     *
+     * <pre>{@code
+     * String t = MockJutsu.trackingNumber().carrier(Carrier.FEDEX).generate();
+     * }</pre>
+     *
+     * @return a new {@link TrackingNumberBuilder}
+     * @since 1.0.0
+     */
+    public static TrackingNumberBuilder trackingNumber() { return new TrackingNumberBuilder(); }
+
+    /**
+     * Returns a fluent builder for crypto address/hash generation with a typed currency selector.
+     *
+     * <pre>{@code
+     * String addr = MockJutsu.cryptoAddress().currency(CryptoCurrency.ETH).generate();
+     * }</pre>
+     *
+     * @return a new {@link CryptoAddressBuilder}
+     * @since 1.0.0
+     */
+    public static CryptoAddressBuilder cryptoAddress() { return new CryptoAddressBuilder(); }
 
     // ── Builder classes ───────────────────────────────────────────────────────
 
@@ -736,5 +1046,365 @@ public final class MockJutsu {
 
         @Override
         protected String qualifier() { return String.valueOf(words); }
+    }
+
+    /**
+     * Fluent builder for account balance generation with optional numeric range.
+     *
+     * <p>The qualifier format forwarded to the generator is {@code "min|max"}
+     * (e.g. {@code "100|5000"}).
+     *
+     * @since 1.0.0
+     */
+    public static final class BalanceBuilder extends BaseBuilder<BalanceBuilder> {
+        private double min = 0;
+        private double max = 0;
+
+        /** Sets the minimum balance (inclusive). */
+        public BalanceBuilder min(double min) { this.min = min; return this; }
+
+        /** Sets the maximum balance (inclusive). */
+        public BalanceBuilder max(double max) { this.max = max; return this; }
+
+        @Override
+        protected String typeName() { return "balance"; }
+
+        @Override
+        protected String qualifier() {
+            if (min != 0 || max != 0) {
+                double lo = min != 0 ? min : 100.0;
+                double hi = max != 0 ? max : 9999.99;
+                return String.format(java.util.Locale.US, "%.2f|%.2f", lo, hi);
+            }
+            return "";
+        }
+    }
+
+    /**
+     * Fluent builder for {@code date_between} generation with optional date range.
+     *
+     * <p>The qualifier format is {@code "YYYY-MM-DD|YYYY-MM-DD"} (start|end).
+     *
+     * @since 1.0.0
+     */
+    public static final class DateRangeBuilder extends BaseBuilder<DateRangeBuilder> {
+        private String from = "";
+        private String to   = "";
+
+        /** Sets the start date in {@code YYYY-MM-DD} format. */
+        public DateRangeBuilder from(String from) { this.from = from == null ? "" : from; return this; }
+
+        /** Sets the end date in {@code YYYY-MM-DD} format. */
+        public DateRangeBuilder to(String to) { this.to = to == null ? "" : to; return this; }
+
+        @Override
+        protected String typeName() { return "date_between"; }
+
+        @Override
+        protected String qualifier() {
+            if (!from.isBlank() && !to.isBlank()) return from + "|" + to;
+            return "";
+        }
+    }
+
+    /**
+     * Fluent builder for dense AI vector ({@code ai_embedding} / {@code ai_vector}) generation
+     * with optional dimension count.
+     *
+     * @since 1.0.0
+     */
+    public static final class AiVectorBuilder extends BaseBuilder<AiVectorBuilder> {
+        private final String type;
+        private int dims = 0;
+
+        AiVectorBuilder(String type) { this.type = type; }
+
+        /** Sets the vector dimension count. Default is 1536. */
+        public AiVectorBuilder dims(int dims) { this.dims = dims; return this; }
+
+        @Override
+        protected String typeName() { return type; }
+
+        @Override
+        protected String qualifier() { return dims > 0 ? String.valueOf(dims) : ""; }
+    }
+
+    /**
+     * Fluent builder for sparse AI vector ({@code ai_sparse_vector}) generation
+     * with optional dims and non-zero count.
+     *
+     * <p>The qualifier format is {@code "dims|nnz"} (e.g. {@code "10000|128"}).
+     *
+     * @since 1.0.0
+     */
+    public static final class AiSparseVectorBuilder extends BaseBuilder<AiSparseVectorBuilder> {
+        private int dims = 0;
+        private int nnz  = 0;
+
+        /** Sets the total vector dimension count. Default is 10000. */
+        public AiSparseVectorBuilder dims(int dims) { this.dims = dims; return this; }
+
+        /** Sets the number of non-zero elements. Default is 128. */
+        public AiSparseVectorBuilder nnz(int nnz) { this.nnz = nnz; return this; }
+
+        @Override
+        protected String typeName() { return "ai_sparse_vector"; }
+
+        @Override
+        protected String qualifier() {
+            if (dims > 0 || nnz > 0) {
+                int d = dims > 0 ? dims : 10000;
+                int n = nnz  > 0 ? nnz  : 128;
+                return d + "|" + n;
+            }
+            return "";
+        }
+    }
+
+    /**
+     * Fluent builder for {@code reverse_regex} string generation.
+     *
+     * <pre>{@code
+     * String s = MockJutsu.reverseRegex().pattern("[A-Z]{3}-\\d{4}").generate();
+     * }</pre>
+     *
+     * @since 1.0.0
+     */
+    public static final class PatternBuilder extends BaseBuilder<PatternBuilder> {
+        private String pattern = "";
+
+        /** Sets the regex pattern to generate a matching string from. */
+        public PatternBuilder pattern(String pattern) {
+            this.pattern = pattern == null ? "" : pattern;
+            return this;
+        }
+
+        @Override
+        protected String typeName() { return "reverse_regex"; }
+
+        @Override
+        protected String qualifier() { return pattern; }
+    }
+
+    /**
+     * Fluent builder for HMAC {@code signature} generation with optional secret and payload.
+     *
+     * <p>The qualifier format is {@code "secret|payload"}.
+     *
+     * @since 1.0.0
+     */
+    public static final class SignatureBuilder extends BaseBuilder<SignatureBuilder> {
+        private String secret  = "";
+        private String payload = "";
+
+        /** Sets the HMAC secret key. */
+        public SignatureBuilder secret(String secret) {
+            this.secret = secret == null ? "" : secret;
+            return this;
+        }
+
+        /** Sets the payload to sign. */
+        public SignatureBuilder payload(String payload) {
+            this.payload = payload == null ? "" : payload;
+            return this;
+        }
+
+        @Override
+        protected String typeName() { return "signature"; }
+
+        @Override
+        protected String qualifier() {
+            if (!secret.isBlank() || !payload.isBlank()) return secret + "|" + payload;
+            return "";
+        }
+    }
+
+    /**
+     * Fluent builder for strict-mode payment message generation
+     * ({@code swift_mt103}, {@code pain001}, {@code sepa_mandate}).
+     *
+     * <p>In strict mode, BICs are drawn from the ISO 9362 compliant pool
+     * (position 8 = {@code "0"}, no branch qualifiers).
+     *
+     * <pre>{@code
+     * String mt103 = MockJutsu.swiftMt103().locale(TR).strict().generate();
+     * String pain  = MockJutsu.pain001().strict().generate();
+     * }</pre>
+     *
+     * @since 1.0.0
+     */
+    public static final class StrictPaymentBuilder extends BaseBuilder<StrictPaymentBuilder> {
+        private final String type;
+        private boolean strict = false;
+
+        StrictPaymentBuilder(String type) { this.type = type; }
+
+        /** Enables ISO 9362 strict BIC mode (position 8 = {@code "0"}). */
+        public StrictPaymentBuilder strict() { this.strict = true; return this; }
+
+        /** Explicitly sets strict mode on or off. */
+        public StrictPaymentBuilder strict(boolean strict) { this.strict = strict; return this; }
+
+        @Override
+        protected String typeName() { return type; }
+
+        @Override
+        protected String qualifier() { return strict ? "strict" : ""; }
+    }
+
+    /**
+     * Fluent builder for {@code forex_rate} generation with optional currency pair.
+     *
+     * <pre>{@code
+     * String rate = MockJutsu.forexRate().pair("EUR/USD").generate();
+     * }</pre>
+     *
+     * @since 1.0.0
+     */
+    public static final class ForexRateBuilder extends BaseBuilder<ForexRateBuilder> {
+        private String pair = "";
+
+        /**
+         * Sets the currency pair in {@code "BASE/QUOTE"} format (e.g. {@code "EUR/USD"}).
+         *
+         * @param pair the currency pair string
+         * @return this builder
+         */
+        public ForexRateBuilder pair(String pair) { this.pair = pair == null ? "" : pair; return this; }
+
+        @Override
+        protected String typeName() { return "forex_rate"; }
+
+        @Override
+        protected String qualifier() { return pair; }
+    }
+
+    /**
+     * Fluent builder for {@code psd2_consent} object generation with optional fixed amount.
+     *
+     * <pre>{@code
+     * String consent = MockJutsu.psd2Consent().amount(1234.56).locale("DE").generate();
+     * }</pre>
+     *
+     * @since 1.0.0
+     */
+    public static final class Psd2ConsentBuilder extends BaseBuilder<Psd2ConsentBuilder> {
+        private double amount = 0;
+
+        /**
+         * Sets a fixed instructed amount for the consent object.
+         *
+         * @param amount the instructed amount in the locale currency
+         * @return this builder
+         */
+        public Psd2ConsentBuilder amount(double amount) { this.amount = amount; return this; }
+
+        @Override
+        protected String typeName() { return "psd2_consent"; }
+
+        @Override
+        protected String qualifier() {
+            return amount > 0 ? String.format(java.util.Locale.US, "%.2f", amount) : "";
+        }
+    }
+
+    /**
+     * Fluent builder for {@code hash} generation with a typed algorithm selector.
+     *
+     * <pre>{@code
+     * String h = MockJutsu.hash().algorithm(HashAlgorithm.SHA3_256).generate();
+     * }</pre>
+     *
+     * @since 1.0.0
+     */
+    public static final class HashBuilder extends BaseBuilder<HashBuilder> {
+        private HashAlgorithm algorithm = HashAlgorithm.SHA256;
+
+        /** Sets the hash algorithm. Default is {@link HashAlgorithm#SHA256}. */
+        public HashBuilder algorithm(HashAlgorithm algorithm) {
+            this.algorithm = algorithm == null ? HashAlgorithm.SHA256 : algorithm;
+            return this;
+        }
+
+        @Override
+        protected String typeName() { return "hash"; }
+
+        @Override
+        protected String qualifier() { return algorithm.key(); }
+    }
+
+    /**
+     * Fluent builder for {@code color} generation with a typed format selector.
+     *
+     * <pre>{@code
+     * String c = MockJutsu.color().format(ColorFormat.HSL).generate();
+     * }</pre>
+     *
+     * @since 1.0.0
+     */
+    public static final class ColorBuilder extends BaseBuilder<ColorBuilder> {
+        private ColorFormat format = ColorFormat.HEX;
+
+        /** Sets the color format. Default is {@link ColorFormat#HEX}. */
+        public ColorBuilder format(ColorFormat format) {
+            this.format = format == null ? ColorFormat.HEX : format;
+            return this;
+        }
+
+        @Override
+        protected String typeName() { return "color"; }
+
+        @Override
+        protected String qualifier() { return format.key(); }
+    }
+
+    /**
+     * Fluent builder for {@code tracking_number} generation with a typed carrier selector.
+     *
+     * <pre>{@code
+     * String t = MockJutsu.trackingNumber().carrier(Carrier.FEDEX).generate();
+     * }</pre>
+     *
+     * @since 1.0.0
+     */
+    public static final class TrackingNumberBuilder extends BaseBuilder<TrackingNumberBuilder> {
+        private Carrier carrier = Carrier.USPS;
+
+        /** Sets the shipping carrier. Default is {@link Carrier#USPS}. */
+        public TrackingNumberBuilder carrier(Carrier carrier) {
+            this.carrier = carrier == null ? Carrier.USPS : carrier;
+            return this;
+        }
+
+        @Override
+        protected String typeName() { return "tracking_number"; }
+
+        @Override
+        protected String qualifier() { return carrier.key(); }
+    }
+
+    /**
+     * Fluent builder for {@code crypto_address} generation with a typed currency selector.
+     *
+     * <pre>{@code
+     * String addr = MockJutsu.cryptoAddress().currency(CryptoCurrency.ETH).generate();
+     * }</pre>
+     *
+     * @since 1.0.0
+     */
+    public static final class CryptoAddressBuilder extends BaseBuilder<CryptoAddressBuilder> {
+        private CryptoCurrency currency = CryptoCurrency.BTC;
+
+        /** Sets the cryptocurrency. Default is {@link CryptoCurrency#BTC}. */
+        public CryptoAddressBuilder currency(CryptoCurrency currency) {
+            this.currency = currency == null ? CryptoCurrency.BTC : currency;
+            return this;
+        }
+
+        @Override
+        protected String typeName() { return "crypto_address"; }
+
+        @Override
+        protected String qualifier() { return currency.key(); }
     }
 }

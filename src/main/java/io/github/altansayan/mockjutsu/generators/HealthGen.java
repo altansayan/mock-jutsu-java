@@ -12,9 +12,27 @@ public final class HealthGen {
 
     private static final String[] BLOOD_TYPES = {"A+","A-","B+","B-","AB+","AB-","O+","O-"};
 
-    private static final String[] ICD10_CODES = {
-        "J18.9","E11.9","I10","E78.5","M54.5","J06.9","F32.1","K21.0","N18.3","I21.0",
-        "C34.1","Z00.00","J45.909","G43.909","F41.1","K29.70","M17.11","E03.9","I25.10","J20.9"
+    private static final String[][] ICD10_POOL = {
+        {"J18.9",   "Pneumonia, unspecified"},
+        {"E11.9",   "Type 2 diabetes mellitus without complications"},
+        {"I10",     "Essential hypertension"},
+        {"E78.5",   "Hyperlipidemia, unspecified"},
+        {"M54.5",   "Low back pain"},
+        {"J06.9",   "Acute upper respiratory infection, unspecified"},
+        {"F32.1",   "Major depressive disorder, moderate"},
+        {"K21.0",   "GERD with oesophagitis"},
+        {"N18.3",   "Chronic kidney disease, stage 3"},
+        {"I21.0",   "Acute myocardial infarction, anterior wall"},
+        {"C34.1",   "Malignant neoplasm, upper lobe bronchus"},
+        {"Z00.00",  "Encounter for general adult medical examination"},
+        {"J45.909", "Unspecified asthma, uncomplicated"},
+        {"G43.909", "Migraine, unspecified, not intractable"},
+        {"F41.1",   "Generalized anxiety disorder"},
+        {"K29.70",  "Gastritis, unspecified, without bleeding"},
+        {"M17.11",  "Primary osteoarthritis, right knee"},
+        {"E03.9",   "Hypothyroidism, unspecified"},
+        {"I25.10",  "Atherosclerotic heart disease, unspecified vessel"},
+        {"J20.9",   "Acute bronchitis, unspecified"}
     };
 
     private static final String[] HL7_APPS = {"EMR_SYS","LIS","RADIOLOGY","PHARMACY","BILLING"};
@@ -71,11 +89,15 @@ public final class HealthGen {
     );
 
     public static String generate(String type, String locale) {
+        return generate(type, locale, "");
+    }
+
+    public static String generate(String type, String locale, String qualifier) {
         ThreadLocalRandom rng = ThreadLocalRandom.current();
         return switch (type) {
             case "blood_type","bloodtype" -> pick(rng, BLOOD_TYPES);
             case "nhs_number","nhsnumber" -> nhsNumber(rng);
-            case "icd10"                  -> pick(rng, ICD10_CODES);
+            case "icd10"                  -> icd10(rng, qualifier);
             case "height"                 -> height(rng, locale);
             case "weight"                 -> weight(rng, locale);
             case "bmi"                    -> bmi(rng);
@@ -85,6 +107,15 @@ public final class HealthGen {
             case "dicom_uid"              -> dicomUid(rng);
             default                       -> "ERROR: Unknown health type '" + type + "'";
         };
+    }
+
+    private static String icd10(ThreadLocalRandom rng, String qualifier) {
+        String[] entry = ICD10_POOL[rng.nextInt(ICD10_POOL.length)];
+        boolean withDesc = "desc".equalsIgnoreCase(qualifier) || "true".equalsIgnoreCase(qualifier)
+                        || "description".equalsIgnoreCase(qualifier);
+        if (withDesc)
+            return "{\"code\":\"" + entry[0] + "\",\"description\":\"" + entry[1] + "\"}";
+        return entry[0];
     }
 
     // ── NHS Number — Modulo 11 checksum ──────────────────────────────────────
