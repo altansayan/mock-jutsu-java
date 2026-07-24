@@ -269,8 +269,28 @@ public final class Masker {
     // ── Main dispatcher ───────────────────────────────────────────────────────
 
     /**
-     * Returns a regulation-compliant masked version of {@code value} for the given type.
-     * Types not in the masking registry are returned unchanged.
+     * Returns a regulation-compliant masked version of {@code value} for the given data type.
+     *
+     * <p>Masking rules are chosen per type to satisfy relevant regulations:
+     * <ul>
+     *   <li>{@code cardnum} — PCI DSS v4.0 §3.4.1: first 6 + last 4 visible
+     *   <li>{@code cardnum_bin8} — ISO/IEC 7812:2017: first 8 + last 4 visible
+     *   <li>{@code cvv3} / {@code cvv4} / {@code pin} — fully masked (PCI SAF)
+     *   <li>{@code iban} — SEPA/PSD2: last 4 digits visible
+     *   <li>{@code tckn} / {@code ykn} — KVKK: first 2 + last 2 visible
+     *   <li>{@code ssn} — US GLBA: last 4 visible
+     *   <li>{@code email} — GDPR Art.5: local part partially masked
+     *   <li>{@code phone} — E.164 / country-prefix preserved, last 2 visible
+     *   <li>{@code nhs_number} — UK NHS: first 3 + last 3 visible
+     *   <li>{@code ip} / {@code ipv4} — GDPR pseudonymisation: last octet zeroed
+     * </ul>
+     *
+     * <p>Types not in the registry are returned unchanged.
+     *
+     * @param type  the data type key (case-insensitive), e.g. {@code "cardnum"}, {@code "iban"}
+     * @param value the raw value to mask; if {@code null} the method returns {@code null}
+     * @return the masked string, or {@code value} unchanged if the type is not recognised
+     * @since 1.0.0
      */
     public static String mask(String type, String value) {
         if (type == null || value == null) return value;
