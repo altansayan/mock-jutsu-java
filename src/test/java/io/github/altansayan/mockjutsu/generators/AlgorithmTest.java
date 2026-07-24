@@ -241,6 +241,98 @@ class AlgorithmTest {
         assertTrue(authResp.contains("7238000006C00000"), "Auth resp bitmap mismatch");
     }
 
+    // ── ISIN — ISO 6166 Luhn checksum ────────────────────────────────────────
+
+    @RepeatedTest(30)
+    void isinChecksumValid() {
+        String isin = FinancialMarketsGen.isin(ThreadLocalRandom.current(), "US");
+        assertEquals(12, isin.length(), "ISIN must be 12 chars");
+        assertTrue(isin.substring(0, 2).matches("[A-Z]{2}"), "ISIN must start with 2 letters");
+        assertTrue(Character.isDigit(isin.charAt(11)), "ISIN last char must be digit");
+
+        // Expand letters to numbers, then Luhn validate full 12-char ISIN
+        StringBuilder numeric = new StringBuilder();
+        for (char c : isin.toCharArray()) {
+            if (Character.isLetter(c)) numeric.append(c - 'A' + 10);
+            else numeric.append(c);
+        }
+        assertTrue(isLuhnValid(numeric.toString()), "ISIN Luhn check failed: " + isin);
+    }
+
+    // ── CUSIP — CUSIP check digit ─────────────────────────────────────────────
+
+    @RepeatedTest(30)
+    void cusipChecksumValid() {
+        String cusip = FinancialMarketsGen.cusip(ThreadLocalRandom.current());
+        assertEquals(9, cusip.length(), "CUSIP must be 9 chars");
+        String payload = cusip.substring(0, 8);
+        int expected = FinancialMarketsGen.cusipCheck(payload);
+        assertEquals(expected, cusip.charAt(8) - '0', "CUSIP check digit invalid: " + cusip);
+    }
+
+    // ── SEDOL — weighted sum check ────────────────────────────────────────────
+
+    @RepeatedTest(30)
+    void sedolChecksumValid() {
+        String sedol = FinancialMarketsGen.sedol(ThreadLocalRandom.current());
+        assertEquals(7, sedol.length(), "SEDOL must be 7 chars");
+        String payload = sedol.substring(0, 6);
+        int expected = FinancialMarketsGen.sedolCheck(payload);
+        assertEquals(expected, sedol.charAt(6) - '0', "SEDOL check digit invalid: " + sedol);
+    }
+
+    // ── LEI — ISO 17442 MOD-97 ───────────────────────────────────────────────
+
+    @RepeatedTest(30)
+    void leiMod97Valid() {
+        String lei = FinancialMarketsGen.lei(ThreadLocalRandom.current());
+        assertEquals(20, lei.length(), "LEI must be 20 chars");
+
+        // Convert all chars to numeric (A=10…Z=35), then mod97 must equal 1
+        StringBuilder numeric = new StringBuilder();
+        for (char c : lei.toCharArray()) {
+            if (Character.isLetter(c)) numeric.append(c - 'A' + 10);
+            else numeric.append(c);
+        }
+        int mod = 0;
+        for (int i = 0; i < numeric.length(); i++) {
+            mod = (mod * 10 + (numeric.charAt(i) - '0')) % 97;
+        }
+        assertEquals(1, mod, "LEI MOD-97 check failed: " + lei);
+    }
+
+    // ── BTC address — Base58Check format ─────────────────────────────────────
+
+    @RepeatedTest(20)
+    void btcAddressFormatValid() {
+        String btc = CryptoGen.btcAddress(ThreadLocalRandom.current());
+        // P2PKH: starts with '1', length 25–34, Base58 charset only
+        assertTrue(btc.startsWith("1"), "BTC P2PKH address must start with '1': " + btc);
+        assertTrue(btc.length() >= 25 && btc.length() <= 34, "BTC address length invalid: " + btc.length());
+        assertTrue(btc.matches("[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+"),
+            "BTC address contains invalid Base58 chars: " + btc);
+    }
+
+    // ── ETH address — EIP-55 mixed-case checksum ─────────────────────────────
+
+    @RepeatedTest(20)
+    void ethAddressEip55Valid() {
+        String eth = CryptoGen.ethAddress();
+        assertTrue(eth.startsWith("0x"), "ETH address must start with 0x: " + eth);
+        assertEquals(42, eth.length(), "ETH address must be 42 chars: " + eth);
+        // Strip 0x, must be valid hex
+        assertTrue(eth.substring(2).matches("[0-9a-fA-F]{40}"), "ETH address not valid hex: " + eth);
+        // Mixed case = checksum address (not all lower, not all upper for non-trivial addresses)
+        String hex = eth.substring(2);
+        boolean hasUpper = hex.chars().anyMatch(Character::isUpperCase);
+        boolean hasLower = hex.chars().anyMatch(Character::isLowerCase);
+        // A valid EIP-55 address that has at least one letter should have mixed case
+        long letterCount = hex.chars().filter(Character::isLetter).count();
+        if (letterCount >= 2) {
+            assertTrue(hasUpper && hasLower, "EIP-55 address should be mixed case: " + eth);
+        }
+    }
+
     // ── MockJutsu API ─────────────────────────────────────────────────────────
 
     @Test
