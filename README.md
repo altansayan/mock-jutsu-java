@@ -172,6 +172,29 @@ MockJutsu.mask("phone", "+905321234567");     // → "+90 *** *** ** 67"
 
 ---
 
-## License
+## ⚖️ Legal Disclaimer
 
-MIT © [Altan Sezer Ayan](https://github.com/altansayan)
+Generated data is **entirely synthetic** and for development/testing environments only.
+
+- Do not submit to real financial, government, or telecom production systems.
+- Generated IBANs, card numbers, and national IDs are mathematically valid but **do not belong to real entities**.
+
+---
+
+## 💝 Support Mock Jutsu
+
+Mock Jutsu is **free and open-source**. If it saved you hours of test data setup, consider buying me a coffee ☕
+
+> *"Every cup of coffee = one more data type."* 🥷
+
+| Network | Address |
+|---------|---------|
+| Ξ Ethereum (ETH) | `0x8D2fF0a795E3a19D41758Cb9b4451C39D528BbAF` |
+
+*This section will be updated with our sponsors.*
+
+---
+
+If mock-jutsu-java saved you from debugging a "valid-looking but broken" test ID, please leave a ⭐!
+
+Released under the [MIT License](LICENSE) • Copyright © 2026 [Altan Sezer Ayan — A.S.A](https://github.com/altansayan)
