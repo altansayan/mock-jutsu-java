@@ -292,4 +292,69 @@ class TypeCoverageTest {
         assertEquals(Gender.RANDOM, Gender.of(""));
         assertEquals(Gender.RANDOM, Gender.of("unknown"));
     }
+
+    // ── generate(DataType, MockJutsuLocale, Network) ──────────────────────────
+
+    @Test
+    void networkEnumOverloadInGenerateMethod() {
+        // generate(CARDNUM, TR, VISA) — the main request from the user
+        String visa = MockJutsu.generate(DataType.CARDNUM, MockJutsuLocale.TR, io.github.altansayan.mockjutsu.enums.Network.VISA);
+        assertFalse(visa.startsWith("ERROR:"), "VISA card error: " + visa);
+        assertFalse(visa.isBlank());
+
+        String amex = MockJutsu.generate(DataType.CARDNUM, MockJutsuLocale.US, io.github.altansayan.mockjutsu.enums.Network.AMEX);
+        assertFalse(amex.startsWith("ERROR:"), "AMEX card error: " + amex);
+        // AMEX is 15-digit, starts with 3
+        assertTrue(amex.replaceAll("\\s","").startsWith("3"), "AMEX should start with 3: " + amex);
+    }
+
+    @Test
+    void genderEnumOverloadInGenerateMethod() {
+        String male   = MockJutsu.generate(DataType.FULLNAME, MockJutsuLocale.TR, Gender.MALE);
+        String female = MockJutsu.generate(DataType.FULLNAME, MockJutsuLocale.TR, Gender.FEMALE);
+        assertFalse(male.isBlank());
+        assertFalse(female.isBlank());
+    }
+
+    // ── AgeBuilder ────────────────────────────────────────────────────────────
+
+    @Test
+    void ageBuilderDefault() {
+        String age = MockJutsu.age().generate();
+        int v = Integer.parseInt(age);
+        assertTrue(v >= 18 && v <= 80, "Default age out of range: " + v);
+    }
+
+    @Test
+    void ageBuilderRange() {
+        for (int i = 0; i < 20; i++) {
+            String age = MockJutsu.age().min(18).max(35).generate();
+            int v = Integer.parseInt(age);
+            assertTrue(v >= 18 && v <= 35, "Age out of 18-35 range: " + v);
+        }
+    }
+
+    @Test
+    void ageBuilderBulk() {
+        List<String> ages = MockJutsu.age().min(20).max(40).bulk(50);
+        assertEquals(50, ages.size());
+        for (String age : ages) {
+            int v = Integer.parseInt(age);
+            assertTrue(v >= 20 && v <= 40, "Age out of 20-40 range: " + v);
+        }
+    }
+
+    // ── MnemonicBuilder ───────────────────────────────────────────────────────
+
+    @Test
+    void mnemonicBuilderDefaultIs12Words() {
+        String phrase = MockJutsu.mnemonic().generate();
+        assertEquals(12, phrase.split("\\s+").length, "Default mnemonic should be 12 words: " + phrase);
+    }
+
+    @Test
+    void mnemonicBuilderWords24() {
+        String phrase = MockJutsu.mnemonic().words(24).generate();
+        assertEquals(24, phrase.split("\\s+").length, "24-word mnemonic word count: " + phrase);
+    }
 }

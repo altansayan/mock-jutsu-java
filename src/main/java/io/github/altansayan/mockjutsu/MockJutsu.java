@@ -157,20 +157,76 @@ public final class MockJutsu {
     }
 
     /**
-     * Generates a single mock value using a typed {@link DataType} enum constant with a qualifier.
+     * Generates a single mock value using a typed {@link DataType} enum with a string qualifier.
      *
-     * <pre>{@code
-     * String visa = MockJutsu.generate(DataType.CARDNUM, MockJutsuLocale.TR, "visa");
-     * }</pre>
+     * <p>Each qualifier-accepting type uses a different format:
+     * <ul>
+     *   <li>{@link DataType#CARDNUM} — network key: use {@link #generate(DataType, MockJutsuLocale, Network)} instead</li>
+     *   <li>{@link DataType#FULLNAME} — gender: use {@link #generate(DataType, MockJutsuLocale, Gender)} instead</li>
+     *   <li>{@link DataType#AGE} — range: use {@link #age()} builder instead</li>
+     *   <li>{@link DataType#BALANCE} — range: {@code "100|5000"} (min|max)</li>
+     *   <li>{@link DataType#MNEMONIC} — word count: {@code "12"}, {@code "15"}, {@code "18"}, {@code "21"}, {@code "24"}; use {@link #mnemonic()} builder instead</li>
+     *   <li>{@link DataType#DATE_BETWEEN} — date range: {@code "2020-01-01|2025-12-31"}</li>
+     * </ul>
      *
      * @param type      the data type enum constant
      * @param locale    the locale enum constant; defaults to {@code US} when {@code null}
-     * @param qualifier optional qualifier (e.g. network key, gender); empty string if unused
+     * @param qualifier optional qualifier string; see per-type documentation above
      * @return a non-null generated value string
      * @since 1.0.0
      */
     public static String generate(DataType type, MockJutsuLocale locale, String qualifier) {
         return Registry.generate(type.key(), locale == null ? "US" : locale.code(), qualifier == null ? "" : qualifier);
+    }
+
+    /**
+     * Generates a card number using a typed {@link Network} enum — fully type-safe, no magic strings.
+     *
+     * <pre>{@code
+     * import static io.github.altansayan.mockjutsu.enums.DataType.*;
+     * import static io.github.altansayan.mockjutsu.enums.MockJutsuLocale.*;
+     * import static io.github.altansayan.mockjutsu.enums.Network.*;
+     *
+     * String visa = MockJutsu.generate(CARDNUM, TR, VISA);
+     * String amex = MockJutsu.generate(CARDNUM, US, AMEX);
+     * String troy = MockJutsu.generate(CARDNUM, TR, TROY);
+     * }</pre>
+     *
+     * @param type    the data type enum constant; only {@link DataType#CARDNUM} uses the network
+     * @param locale  the locale enum constant
+     * @param network the card network; {@code null} uses the locale default
+     * @return a non-null Luhn-valid card number string
+     * @since 1.0.0
+     * @see CardnumBuilder
+     */
+    public static String generate(DataType type, MockJutsuLocale locale, Network network) {
+        return Registry.generate(type.key(), locale == null ? "US" : locale.code(),
+                network == null ? "" : network.key());
+    }
+
+    /**
+     * Generates a full name using a typed {@link Gender} enum — fully type-safe, no magic strings.
+     *
+     * <pre>{@code
+     * import static io.github.altansayan.mockjutsu.enums.DataType.*;
+     * import static io.github.altansayan.mockjutsu.enums.MockJutsuLocale.*;
+     * import static io.github.altansayan.mockjutsu.enums.Gender.*;
+     *
+     * String male   = MockJutsu.generate(FULLNAME, TR, MALE);
+     * String female = MockJutsu.generate(FULLNAME, DE, FEMALE);
+     * }</pre>
+     *
+     * @param type   the data type enum constant; only {@link DataType#FULLNAME}, {@link DataType#FIRSTNAME},
+     *               {@link DataType#LASTNAME} use the gender qualifier
+     * @param locale the locale enum constant
+     * @param gender the gender; {@link Gender#RANDOM} picks randomly
+     * @return a non-null generated name string
+     * @since 1.0.0
+     * @see FullnameBuilder
+     */
+    public static String generate(DataType type, MockJutsuLocale locale, Gender gender) {
+        return Registry.generate(type.key(), locale == null ? "US" : locale.code(),
+                gender == null ? "" : gender.key());
     }
 
     /**
@@ -347,6 +403,42 @@ public final class MockJutsu {
      * @since 1.0.0
      */
     public static SimpleBuilder ean13() { return new SimpleBuilder("ean13"); }
+
+    /**
+     * Returns a fluent builder for age generation with optional min/max range.
+     *
+     * <pre>{@code
+     * // Random age 18–80 (default)
+     * String age = MockJutsu.age().locale("TR").generate();
+     *
+     * // Constrained range
+     * String adult = MockJutsu.age().min(18).max(35).generate();
+     * String senior = MockJutsu.age().min(65).max(90).generate();
+     *
+     * // Bulk
+     * List<String> ages = MockJutsu.age().min(20).max(40).bulk(100);
+     * }</pre>
+     *
+     * @return a new {@link AgeBuilder}
+     * @since 1.0.0
+     */
+    public static AgeBuilder age() { return new AgeBuilder(); }
+
+    /**
+     * Returns a fluent builder for BIP-39 mnemonic phrase generation.
+     *
+     * <pre>{@code
+     * // Default 12 words
+     * String phrase = MockJutsu.mnemonic().generate();
+     *
+     * // 24-word seed phrase
+     * String phrase24 = MockJutsu.mnemonic().words(24).generate();
+     * }</pre>
+     *
+     * @return a new {@link MnemonicBuilder}
+     * @since 1.0.0
+     */
+    public static MnemonicBuilder mnemonic() { return new MnemonicBuilder(); }
 
     // ── Builder classes ───────────────────────────────────────────────────────
 
@@ -577,5 +669,72 @@ public final class MockJutsu {
 
         @Override
         protected String qualifier() { return gender; }
+    }
+
+    /**
+     * Fluent builder for age generation with optional numeric range.
+     *
+     * <p>The qualifier format forwarded to the generator is {@code "min-max"}
+     * (e.g. {@code "18-35"}), matching the CLI {@code --min}/{@code --max} parameters.
+     *
+     * @since 1.0.0
+     */
+    public static final class AgeBuilder extends BaseBuilder<AgeBuilder> {
+        private int min = 0;
+        private int max = 0;
+
+        /**
+         * Sets the minimum age (inclusive). Default is 18.
+         *
+         * @param min minimum age value
+         * @return this builder
+         */
+        public AgeBuilder min(int min) { this.min = min; return this; }
+
+        /**
+         * Sets the maximum age (inclusive). Default is 80.
+         *
+         * @param max maximum age value
+         * @return this builder
+         */
+        public AgeBuilder max(int max) { this.max = max; return this; }
+
+        @Override
+        protected String typeName() { return "age"; }
+
+        @Override
+        protected String qualifier() {
+            if (min > 0 || max > 0) {
+                int lo = min > 0 ? min : 18;
+                int hi = max > 0 ? max : 80;
+                return lo + "-" + hi;
+            }
+            return "";
+        }
+    }
+
+    /**
+     * Fluent builder for BIP-39 mnemonic phrase generation.
+     *
+     * <p>Valid word counts: 12, 15, 18, 21, 24. Any other value defaults to 12.
+     *
+     * @since 1.0.0
+     */
+    public static final class MnemonicBuilder extends BaseBuilder<MnemonicBuilder> {
+        private int words = 12;
+
+        /**
+         * Sets the mnemonic word count. Valid values: 12, 15, 18, 21, 24.
+         *
+         * @param words the number of BIP-39 words; invalid values default to 12
+         * @return this builder
+         */
+        public MnemonicBuilder words(int words) { this.words = words; return this; }
+
+        @Override
+        protected String typeName() { return "mnemonic"; }
+
+        @Override
+        protected String qualifier() { return String.valueOf(words); }
     }
 }
