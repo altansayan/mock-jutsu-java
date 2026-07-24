@@ -34,6 +34,12 @@ public final class ComplianceGen {
             case "tpp_id"                -> tppId(rng);
             case "onboarding_method"     -> pick(rng, ONBOARDING_METHODS);
             case "sanctions_hit"         -> rng.nextDouble() < 0.05 ? "True" : "False";
+            // Regulatory masked variants
+            case "sar_number_masked"              -> "****-****-****";
+            case "policy_number_masked"           -> "POL-****-" + rng.nextInt(10000, 100000);
+            case "claim_number_masked"            -> "CLM-****-" + rng.nextInt(10000, 100000);
+            case "ubo_ownership_percentage_masked"-> "**%";
+            case "consent_id_masked"              -> consentIdMasked(rng);
             default                      -> "ERROR: Unknown compliance type '" + type + "'";
         };
     }
@@ -71,6 +77,13 @@ public final class ComplianceGen {
         String suffix = UUID.randomUUID().toString().replace("-", "")
             .toUpperCase(java.util.Locale.ROOT).substring(0, 12);
         return "CONSENT-" + suffix;
+    }
+
+    private static String consentIdMasked(ThreadLocalRandom rng) {
+        // GDPR Art. 7: consent ID is internal reference — last 8 hex chars visible
+        String full = UUID.randomUUID().toString().replace("-", "");
+        String last8 = full.substring(full.length() - 8);
+        return "****-****-****-****-" + last8;
     }
 
     private static String tppId(ThreadLocalRandom rng) {

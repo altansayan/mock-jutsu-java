@@ -46,6 +46,8 @@ class TypeCoverageTest {
             "account_type","transaction_type","transaction_description",
             "ifsc_code","bsb_code","check_number","micr_line",
             "payment_reference","account_number",
+            "micr_line_masked","transaction_description_masked",
+            "check_number_masked","payment_reference_masked",
             // Corporate
             "company_name","job_title","occupation",
             // Health
@@ -126,10 +128,15 @@ class TypeCoverageTest {
             "policy_number","claim_number","pep_status","aml_risk_rating","cdd_level",
             "sar_number","ubo_ownership_percentage","kyc_document_type","consent_id",
             "tpp_id","onboarding_method","sanctions_hit",
+            // Compliance masked variants
+            "sar_number_masked","policy_number_masked","claim_number_masked",
+            "ubo_ownership_percentage_masked","consent_id_masked",
             // Financial ext
             "credit_score_model","credit_score_tier","credit_limit","credit_utilization",
             "credit_card_issuer_name","apr","loan_type","mortgage_rate","mortgage_term",
             "premium_amount","deductible","coverage_limit","claim_status",
+            // Financial ext masked variants
+            "credit_limit_masked","mortgage_rate_masked","premium_amount_masked",
             // DateTime
             "past_date","future_date","date_this_year","date_this_month","time_only",
             "past_datetime","future_datetime",

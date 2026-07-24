@@ -108,8 +108,13 @@ public final class BankingGen {
             case "micr_line"             -> micrLine(rng);
             case "payment_reference"     -> paymentReference(rng);
             case "account_number"        -> accountNumber(rng);
-            case "account_number_masked" -> "****" + randomDigits(rng, 4);
-            default                      -> "ERROR: Unknown banking type '" + type + "'";
+            case "account_number_masked"             -> "****" + randomDigits(rng, 4);
+            // PCI-DSS §3.3 / GLBA masked variants
+            case "micr_line_masked"                  -> micrLineMasked(rng);
+            case "transaction_description_masked"    -> transactionDescriptionMasked(rng, locale);
+            case "check_number_masked"               -> checkNumberMasked(rng);
+            case "payment_reference_masked"          -> paymentReferenceMasked();
+            default                                  -> "ERROR: Unknown banking type '" + type + "'";
         };
     }
 
@@ -317,6 +322,35 @@ public final class BankingGen {
             case "FR" -> TX_DESC_FR; case "RU" -> TX_DESC_RU; default   -> TX_DESC_TR;
         };
         return pick(rng, descs);
+    }
+
+    // ── Masked Variants ───────────────────────────────────────────────────────
+
+    private static String micrLineMasked(ThreadLocalRandom rng) {
+        // PCI-DSS §3.3: routing number is public (ABA directory), account segment masked
+        String rt  = routingNumber(rng);
+        String chk = String.format("%04d", rng.nextInt(1, 10000));
+        return "|" + rt + "| |****| " + chk;
+    }
+
+    private static String transactionDescriptionMasked(ThreadLocalRandom rng, String locale) {
+        // GDPR Art. 5(1)(c) data minimisation: truncate free-text to 10 chars
+        String desc = transactionDescription(rng, locale);
+        if (desc.length() > 10) return desc.substring(0, 10) + "***";
+        return desc + "***";
+    }
+
+    private static String checkNumberMasked(ThreadLocalRandom rng) {
+        // Mask check sequence — last 2 digits visible
+        int n = rng.nextInt(1, 10000);
+        String last2 = String.format("%04d", n).substring(2);
+        return "**" + last2;
+    }
+
+    private static String paymentReferenceMasked() {
+        // GLBA best practice: date segment not sensitive, sequence masked
+        String datePart = java.time.LocalDate.now().format(DATE_FMT);
+        return "PAYREF-" + datePart + "-*****";
     }
 
     // ── Helpers ───────────────────────────────────────────────────────────────

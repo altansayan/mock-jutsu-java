@@ -31,6 +31,10 @@ public final class FinancialExtGen {
             case "deductible"            -> String.format(java.util.Locale.US, "%.2f", (double) DEDUCTIBLE_STEPS[rng.nextInt(DEDUCTIBLE_STEPS.length)]);
             case "coverage_limit"        -> String.format(java.util.Locale.US, "%.2f", (double) COVERAGE_TIERS[rng.nextInt(COVERAGE_TIERS.length)]);
             case "claim_status"          -> pick(rng, CLAIM_STATUSES);
+            // GLBA §501 NPI masked variants — static masks per Python parity
+            case "credit_limit_masked"   -> "$**,***";
+            case "mortgage_rate_masked"  -> "**.**%";
+            case "premium_amount_masked" -> "$*,***";
             default -> "ERROR: Unknown financial_ext type '" + type + "'";
         };
     }
