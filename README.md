@@ -9,7 +9,7 @@
 
 Generate all the realistic mock data you need for your Java and Java test projects (Unit Tests, Integration Tests, and Test Automation) with a single library. National IDs, card numbers, IBANs, JWTs, IP addresses, medical records, IoT messages, and more: 390+ data types, zero external dependencies, algorithmically verified outputs.
 
-Java port of [Mock Jutsu](https://github.com/altansayan/mock-jutsu-api) (Python/PyPI).
+Java implementation of [Mock Jutsu](https://github.com/altansayan/mock-jutsu-api) (Python/PyPI).
 
 ---
 
@@ -236,11 +236,35 @@ MockJutsu.generateMasked(DataType.SSN,           US); // → "***-**-6789"      
 
 ---
 
+## Changelog
+
+See [GitHub Releases](https://github.com/altansayan/mock-jutsu-java/releases) for the full version history.
+
+| Version | Highlights |
+|---------|-----------|
+| 1.0.0 | Initial release - 390+ types, fluent builders, masker, regulation-compliant output |
+
+---
+
 ## Related
 
 - **Python / CLI / API**: [mock-jutsu-api](https://github.com/altansayan/mock-jutsu-api) - `pip install mockjutsu`
 - **JMeter Plugin**: [mock-jutsu-jmeter](https://github.com/altansayan/mock-jutsu-jmeter)
 - **PyPI**: [mockjutsu](https://pypi.org/project/mockjutsu/)
+
+---
+
+## Contributing
+
+Contributions are welcome! To add a new data type or fix a bug:
+
+1. Fork the repository
+2. Add your generator in the relevant `src/main/java/.../generators/` class
+3. Register the type key in `Registry.java`
+4. Add a test in `TypeCoverageTest.java` or `AlgorithmTest.java`
+5. Open a pull request
+
+Please make sure all 1000+ existing tests pass before submitting: `mvn test`
 
 ---
 
