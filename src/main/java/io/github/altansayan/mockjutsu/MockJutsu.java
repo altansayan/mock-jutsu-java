@@ -1,5 +1,7 @@
 package io.github.altansayan.mockjutsu;
 
+import io.github.altansayan.mockjutsu.enums.DataType;
+import io.github.altansayan.mockjutsu.enums.Gender;
 import io.github.altansayan.mockjutsu.enums.MockJutsuLocale;
 import io.github.altansayan.mockjutsu.enums.Network;
 import io.github.altansayan.mockjutsu.masker.Masker;
@@ -114,6 +116,97 @@ public final class MockJutsu {
         List<String> results = new ArrayList<>(count);
         for (int i = 0; i < count; i++) results.add(generate(type, locale));
         return results;
+    }
+
+    // ── DataType enum overloads ───────────────────────────────────────────────
+
+    /**
+     * Generates a single mock value using a typed {@link DataType} enum constant.
+     *
+     * <pre>{@code
+     * import static io.github.altansayan.mockjutsu.enums.DataType.*;
+     * import static io.github.altansayan.mockjutsu.enums.MockJutsuLocale.*;
+     *
+     * String tckn = MockJutsu.generate(TCKN, TR);
+     * String iban = MockJutsu.generate(IBAN, DE);
+     * }</pre>
+     *
+     * @param type   the data type enum constant
+     * @param locale the locale code string; defaults to {@code "US"} when {@code null}
+     * @return a non-null generated value string
+     * @since 1.0.0
+     */
+    public static String generate(DataType type, String locale) {
+        return Registry.generate(type.key(), locale == null ? "US" : locale);
+    }
+
+    /**
+     * Generates a single mock value using typed {@link DataType} and {@link MockJutsuLocale} enums.
+     *
+     * <pre>{@code
+     * String tckn = MockJutsu.generate(DataType.TCKN, MockJutsuLocale.TR);
+     * }</pre>
+     *
+     * @param type   the data type enum constant
+     * @param locale the locale enum constant; defaults to {@code US} when {@code null}
+     * @return a non-null generated value string
+     * @since 1.0.0
+     */
+    public static String generate(DataType type, MockJutsuLocale locale) {
+        return Registry.generate(type.key(), locale == null ? "US" : locale.code());
+    }
+
+    /**
+     * Generates a single mock value using a typed {@link DataType} enum constant with a qualifier.
+     *
+     * <pre>{@code
+     * String visa = MockJutsu.generate(DataType.CARDNUM, MockJutsuLocale.TR, "visa");
+     * }</pre>
+     *
+     * @param type      the data type enum constant
+     * @param locale    the locale enum constant; defaults to {@code US} when {@code null}
+     * @param qualifier optional qualifier (e.g. network key, gender); empty string if unused
+     * @return a non-null generated value string
+     * @since 1.0.0
+     */
+    public static String generate(DataType type, MockJutsuLocale locale, String qualifier) {
+        return Registry.generate(type.key(), locale == null ? "US" : locale.code(), qualifier == null ? "" : qualifier);
+    }
+
+    /**
+     * Generates a list of mock values using a typed {@link DataType} enum constant.
+     *
+     * <pre>{@code
+     * List<String> ibans = MockJutsu.bulk(DataType.IBAN, MockJutsuLocale.TR, 50);
+     * }</pre>
+     *
+     * @param type   the data type enum constant
+     * @param locale the locale enum constant; defaults to {@code US} when {@code null}
+     * @param count  the number of values to generate
+     * @return a mutable list of generated strings, never {@code null}
+     * @since 1.0.0
+     */
+    public static List<String> bulk(DataType type, MockJutsuLocale locale, int count) {
+        List<String> results = new ArrayList<>(count);
+        String loc = locale == null ? "US" : locale.code();
+        for (int i = 0; i < count; i++) results.add(Registry.generate(type.key(), loc));
+        return results;
+    }
+
+    /**
+     * Returns a regulation-compliant masked value using a typed {@link DataType} enum constant.
+     *
+     * <pre>{@code
+     * String masked = MockJutsu.mask(DataType.CARDNUM, "4532015112830366");
+     * }</pre>
+     *
+     * @param type  the data type enum constant
+     * @param value the raw value to mask
+     * @return the masked value, or the original value if no masking rule exists
+     * @since 1.0.0
+     */
+    public static String mask(DataType type, String value) {
+        return Masker.mask(type.key(), value);
     }
 
     // ── Masker ────────────────────────────────────────────────────────────────
@@ -461,6 +554,24 @@ public final class MockJutsu {
          */
         public FullnameBuilder gender(String gender) {
             this.gender = gender == null ? "" : gender;
+            return this;
+        }
+
+        /**
+         * Filters the generated name by gender using a typed {@link Gender} enum.
+         *
+         * <pre>{@code
+         * import static io.github.altansayan.mockjutsu.enums.Gender.*;
+         *
+         * String maleName = MockJutsu.fullname().locale("TR").gender(MALE).generate();
+         * }</pre>
+         *
+         * @param gender the gender enum constant; {@link Gender#RANDOM} picks randomly
+         * @return this builder
+         * @since 1.0.0
+         */
+        public FullnameBuilder gender(Gender gender) {
+            this.gender = gender == null ? "" : gender.key();
             return this;
         }
 

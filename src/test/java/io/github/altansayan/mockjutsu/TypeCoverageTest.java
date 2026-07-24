@@ -1,5 +1,8 @@
 package io.github.altansayan.mockjutsu;
 
+import io.github.altansayan.mockjutsu.enums.DataType;
+import io.github.altansayan.mockjutsu.enums.Gender;
+import io.github.altansayan.mockjutsu.enums.MockJutsuLocale;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -221,5 +224,72 @@ class TypeCoverageTest {
             String result = MockJutsu.generate(type, "TR");
             assertFalse(result.startsWith("ERROR:"), type + " error: " + result);
         }
+    }
+
+    // ── DataType enum: 390 constants, all backed by a working key ─────────────
+
+    @Test
+    void dataTypeEnumHas390Constants() {
+        assertEquals(390, DataType.values().length,
+            "DataType enum must have exactly 390 constants (one per supported type)");
+    }
+
+    @Test
+    void dataTypeEnumAllConstantsWork() {
+        for (DataType dt : DataType.values()) {
+            String locale = LOCALE_SPECIFIC.contains(dt.key()) ? "RU" : "TR";
+            String result = MockJutsu.generate(dt, MockJutsuLocale.of(locale));
+            assertFalse(result.startsWith("ERROR:"),
+                "DataType." + dt.name() + " (\"" + dt.key() + "\") returned: " + result);
+        }
+    }
+
+    @Test
+    void dataTypeEnumOverloads() {
+        // generate(DataType, String)
+        String r1 = MockJutsu.generate(DataType.TCKN, "TR");
+        assertFalse(r1.startsWith("ERROR:"));
+
+        // generate(DataType, MockJutsuLocale)
+        String r2 = MockJutsu.generate(DataType.IBAN, MockJutsuLocale.DE);
+        assertFalse(r2.startsWith("ERROR:"));
+
+        // generate(DataType, MockJutsuLocale, qualifier)
+        String r3 = MockJutsu.generate(DataType.CARDNUM, MockJutsuLocale.TR, "visa");
+        assertFalse(r3.startsWith("ERROR:"));
+
+        // bulk(DataType, MockJutsuLocale, count)
+        List<String> bulk = MockJutsu.bulk(DataType.IBAN, MockJutsuLocale.TR, 5);
+        assertEquals(5, bulk.size());
+        bulk.forEach(v -> assertFalse(v.startsWith("ERROR:")));
+
+        // mask(DataType, String)
+        String masked = MockJutsu.mask(DataType.CARDNUM, "4532015112830366");
+        assertFalse(masked.startsWith("ERROR:"));
+        assertTrue(masked.contains("*"));
+    }
+
+    // ── Gender enum ───────────────────────────────────────────────────────────
+
+    @Test
+    void genderEnumOverload() {
+        String male   = MockJutsu.fullname().locale("TR").gender(Gender.MALE).generate();
+        String female = MockJutsu.fullname().locale("TR").gender(Gender.FEMALE).generate();
+        String random = MockJutsu.fullname().locale("TR").gender(Gender.RANDOM).generate();
+        assertFalse(male.isBlank(),   "MALE fullname is blank");
+        assertFalse(female.isBlank(), "FEMALE fullname is blank");
+        assertFalse(random.isBlank(), "RANDOM fullname is blank");
+    }
+
+    @Test
+    void genderEnumOfParsing() {
+        assertEquals(Gender.MALE,   Gender.of("M"));
+        assertEquals(Gender.MALE,   Gender.of("male"));
+        assertEquals(Gender.MALE,   Gender.of("erkek"));
+        assertEquals(Gender.FEMALE, Gender.of("F"));
+        assertEquals(Gender.FEMALE, Gender.of("female"));
+        assertEquals(Gender.RANDOM, Gender.of(null));
+        assertEquals(Gender.RANDOM, Gender.of(""));
+        assertEquals(Gender.RANDOM, Gender.of("unknown"));
     }
 }
