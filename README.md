@@ -234,14 +234,6 @@ MockJutsu.generateMasked(DataType.SSN,           US); // → "***-**-6789"      
 
 ---
 
-## Requirements
-
-- Java 17+
-- Zero external dependencies (main library)
-- JUnit Jupiter 5.10+ (test only)
-
----
-
 ## Related
 
 - **Python / CLI / API**: [mock-jutsu-api](https://github.com/altansayan/mock-jutsu-api) - `pip install mockjutsu`
