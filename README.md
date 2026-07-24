@@ -56,7 +56,7 @@ import static io.github.altansayan.mockjutsu.enums.AccountType.*;    // CHECKING
 
 ## Quick Start
 
-### String API - dynamic / scriptable
+### String - Dynamic / Scriptable
 
 ```java
 import io.github.altansayan.mockjutsu.MockJutsu;
@@ -77,7 +77,7 @@ String troy  = MockJutsu.generate("cardnum", "TR", "troy");
 List<String> cards = MockJutsu.bulk("cardnum", "TR", 100);
 ```
 
-### Enum API - fully qualified, no static imports needed
+### Enum - Fully Qualified, No Static Imports Needed
 
 ```java
 import io.github.altansayan.mockjutsu.MockJutsu;
@@ -92,7 +92,7 @@ String iban  = MockJutsu.generate(DataType.IBAN,     MockJutsuLocale.DE);
 String tckn  = MockJutsu.generate(DataType.TCKN,     MockJutsuLocale.TR);
 ```
 
-### Fluent Builder API - type-safe, IDE autocomplete
+### Fluent Builder - Type-Safe, IDE Autocomplete
 
 ```java
 import static io.github.altansayan.mockjutsu.enums.MockJutsuLocale.*;
@@ -121,7 +121,7 @@ String name = MockJutsu.fullname()
     .generate();
 ```
 
-### Masker - 1. Mask an existing value
+### Masker - 1. Mask An Existing Value
 
 ```java
 // PCI DSS (6-digit BIN visible + last 4)
@@ -138,7 +138,7 @@ MockJutsu.masker(DataType.PHONE,        "+905321234567");                 // →
 MockJutsu.masker(DataType.ADDRESS_FULL, "Bagdat Caddesi No:45 Kadikoy"); // → "B*** C*** N*** K***"
 ```
 
-### Masker - 2. Generate + mask in one call
+### Masker - 2. Generate + Mask In One Call
 
 ```java
 // Generates an algorithmically valid value, then masks it - equivalent to CLI --mask flag
