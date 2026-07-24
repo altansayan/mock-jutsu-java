@@ -9,13 +9,26 @@ out/
 .gradle/
 gradle/wrapper/gradle-wrapper.jar
 
-# IDE
+# IDE — IntelliJ
 .idea/
 *.iml
+
+# IDE — VS Code
+.vscode/
+*.code-workspace
+
+# IDE — Eclipse
 .project
 .classpath
 .settings/
-*.code-workspace
+
+# IDE — NetBeans
+nbproject/
+nbactions.xml
+
+# IDE — Sublime Text
+*.sublime-project
+*.sublime-workspace
 
 # Maven
 .mvn/
@@ -28,3 +41,5 @@ Thumbs.db
 *.p12
 *.gpg
 secring.gpg
+
+.fake

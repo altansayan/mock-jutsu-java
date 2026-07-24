@@ -26,18 +26,55 @@ public enum DataType {
 
     // ── 3DS ──────────────────────────────────────────────────────────────────
     THREE_DS_CAVV("3ds_cavv"),
+    /**
+     * 3-D Secure Electronic Commerce Indicator. Accepts a {@link Network} qualifier.
+     * <p>Available networks: {@link Network#VISA}, {@link Network#MC}, {@link Network#AMEX},
+     * {@link Network#TROY}, {@link Network#MIR}, {@link Network#JCB},
+     * {@link Network#DISCOVER}, {@link Network#UNIONPAY}, {@link Network#MAESTRO}.
+     * <p>Type-safe: {@code MockJutsu.generate(THREE_DS_ECI, locale, Network.VISA)}.
+     */
     THREE_DS_ECI("3ds_eci"),
 
     // ── A ─────────────────────────────────────────────────────────────────────
     ACCOUNT_NUMBER("account_number"),
     ACCOUNT_NUMBER_MASKED("account_number_masked"),
+    /**
+     * Bank account type. Accepts an {@link AccountType} qualifier.
+     * <p>Available: {@link AccountType#CHECKING}, {@link AccountType#SAVINGS},
+     * {@link AccountType#CURRENT}, {@link AccountType#BUSINESS_CHECKING},
+     * {@link AccountType#MONEY_MARKET}, {@link AccountType#CD}, {@link AccountType#INVESTMENT}.
+     * <p>Type-safe: {@code MockJutsu.accountType().locale(CA).type(AccountType.CHECKING).generate()}
+     * or {@code MockJutsu.generate(ACCOUNT_TYPE, CA, AccountType.SAVINGS)}.
+     */
     ACCOUNT_TYPE("account_type"),
     ADDRESS_CITY("address_city"),
     ADDRESS_FULL("address_full"),
     ADDRESS_STREET("address_street"),
+    /**
+     * Age in years. Accepts an integer range qualifier {@code "min-max"} (default 18–80).
+     * <p>Builder: {@code MockJutsu.age().min(18).max(35).generate()}.
+     */
     AGE("age"),
+
+    /**
+     * AI embedding vector (dense float array). Accepts an integer {@code dims} qualifier
+     * specifying vector dimensions (default 1536).
+     * <p>Builder: {@code MockJutsu.aiEmbedding().dims(768).generate()}.
+     */
     AI_EMBEDDING("ai_embedding"),
+
+    /**
+     * Sparse AI vector in {@code {"indices":[],"values":[]}} JSON format.
+     * Accepts a {@code "dims|nnz"} qualifier — total dimensions and non-zero element count
+     * (e.g. {@code "1000|50"}; defaults: dims=1000, nnz=50).
+     * <p>Builder: {@code MockJutsu.aiSparseVector().dims(500).nnz(20).generate()}.
+     */
     AI_SPARSE_VECTOR("ai_sparse_vector"),
+
+    /**
+     * Dense AI float vector. Accepts an integer {@code dims} qualifier (default 1536).
+     * <p>Builder: {@code MockJutsu.aiVector().dims(256).generate()}.
+     */
     AI_VECTOR("ai_vector"),
     AML_RISK_RATING("aml_risk_rating"),
     APDU("apdu"),
@@ -53,6 +90,11 @@ public enum DataType {
     AU_TFN("au_tfn"),
 
     // ── B ─────────────────────────────────────────────────────────────────────
+    /**
+     * Monetary balance. Accepts a {@code "min|max"} qualifier with decimal amounts
+     * (e.g. {@code "100.00|5000.00"}; default 0–10000).
+     * <p>Builder: {@code MockJutsu.balance().min(500).max(9999).generate()}.
+     */
     BALANCE("balance"),
     BANK_NAME("bank_name"),
     BEARERTOKEN("bearertoken"),
@@ -61,6 +103,12 @@ public enum DataType {
     BIK_CODE("bik_code"),
     BIO("bio"),
     BIRTHDATE("birthdate"),
+    /**
+     * Blockchain block hash. Accepts a {@link CryptoCurrency} qualifier.
+     * <p>Available currencies: {@link CryptoCurrency#BTC} (64-char hex),
+     * {@link CryptoCurrency#ETH} ({@code 0x...} 66-char hex).
+     * <p>Type-safe: {@code MockJutsu.generate(BLOCK_HASH, locale, CryptoCurrency.BTC)}.
+     */
     BLOCK_HASH("block_hash"),
     BLOCKCHAIN_NETWORK("blockchain_network"),
     BLOOD_TYPE("blood_type"),
@@ -82,6 +130,14 @@ public enum DataType {
     CAN_FRAME("can_frame"),
     CARDCATEGORY("cardcategory"),
     CARDNETWORK("cardnetwork"),
+    /**
+     * Payment card number (Luhn-valid). Accepts a {@link Network} qualifier.
+     * <p>Available networks: {@link Network#VISA}, {@link Network#MC}, {@link Network#AMEX},
+     * {@link Network#TROY}, {@link Network#MIR}, {@link Network#JCB},
+     * {@link Network#DISCOVER}, {@link Network#UNIONPAY}, {@link Network#MAESTRO}.
+     * <p>Type-safe: {@code MockJutsu.generate(CARDNUM, locale, Network.VISA)}
+     * or {@code MockJutsu.cardnum().network(Network.VISA).generate()}.
+     */
     CARDNUM("cardnum"),
     CARDOWNER("cardowner"),
     CARDSTATUS("cardstatus"),
@@ -100,6 +156,15 @@ public enum DataType {
     CLIENTVERSION("clientversion"),
     CN_RIC("cn_ric"),
     CO_NIT("co_nit"),
+    /**
+     * Color value. Accepts a {@link ColorFormat} qualifier.
+     * <p>Available formats: {@link ColorFormat#HEX} ({@code #RRGGBB}),
+     * {@link ColorFormat#RGB} ({@code rgb(r,g,b)}),
+     * {@link ColorFormat#HSL} ({@code hsl(h,s%,l%)}),
+     * {@link ColorFormat#NAME} (CSS color name).
+     * <p>Type-safe: {@code MockJutsu.generate(COLOR, locale, ColorFormat.HEX)}
+     * or {@code MockJutsu.color().format(ColorFormat.RGB).generate()}.
+     */
     COLOR("color"),
     COMPANY_NAME("company_name"),
     CONSENT_ID("consent_id"),
@@ -118,6 +183,13 @@ public enum DataType {
     CREDIT_UTILIZATION("credit_utilization"),
     CREDITOR_REF("creditor_ref"),
     CRN("crn"),
+    /**
+     * Cryptocurrency wallet address. Accepts a {@link CryptoCurrency} qualifier.
+     * <p>Available currencies: {@link CryptoCurrency#BTC} (Base58Check P2PKH),
+     * {@link CryptoCurrency#ETH} ({@code 0x...} 40-char hex).
+     * <p>Type-safe: {@code MockJutsu.generate(CRYPTO_ADDRESS, locale, CryptoCurrency.ETH)}
+     * or {@code MockJutsu.cryptoAddress().currency(CryptoCurrency.BTC).generate()}.
+     */
     CRYPTO_ADDRESS("crypto_address"),
     CRYPTOCURRENCY_NAME("cryptocurrency_name"),
     CURRENCY("currency"),
@@ -127,6 +199,12 @@ public enum DataType {
     CVV4("cvv4"),
 
     // ── D ─────────────────────────────────────────────────────────────────────
+    /**
+     * Random date falling between two bounds (ISO-8601 format).
+     * Accepts a {@code "from|to"} qualifier with ISO date strings
+     * (e.g. {@code "2020-01-01|2024-12-31"}).
+     * <p>Builder: {@code MockJutsu.dateRange().from("2023-01-01").to("2023-12-31").generate()}.
+     */
     DATE_BETWEEN("date_between"),
     DATE_THIS_MONTH("date_this_month"),
     DATE_THIS_YEAR("date_this_year"),
@@ -176,11 +254,26 @@ public enum DataType {
     FI_HETU("fi_hetu"),
     FIDO2_ASSERTION("fido2_assertion"),
     FIGI("figi"),
+    /**
+     * First name localised to the requested locale. Accepts a {@link Gender} qualifier.
+     * <p>Available genders: {@link Gender#MALE}, {@link Gender#FEMALE}.
+     * <p>Type-safe: {@code MockJutsu.generate(FIRSTNAME, locale, Gender.FEMALE)}.
+     */
     FIRSTNAME("firstname"),
     FIX_MESSAGE("fix_message"),
     FOLLOWER_COUNT("follower_count"),
     FOREX_PAIR("forex_pair"),
+    /**
+     * Foreign exchange rate. Accepts a currency-pair qualifier string (e.g. {@code "EUR/USD"},
+     * {@code "USD/TRY"}).
+     * <p>Builder: {@code MockJutsu.forexRate().pair("EUR/USD").generate()}.
+     */
     FOREX_RATE("forex_rate"),
+    /**
+     * Full name (first + last) localised to the requested locale. Accepts a {@link Gender} qualifier.
+     * <p>Available genders: {@link Gender#MALE}, {@link Gender#FEMALE}.
+     * <p>Type-safe: {@code MockJutsu.generate(FULLNAME, locale, Gender.MALE)}.
+     */
     FULLNAME("fullname"),
     FUTURE_DATE("future_date"),
     FUTURE_DATETIME("future_datetime"),
@@ -193,6 +286,17 @@ public enum DataType {
 
     // ── H ─────────────────────────────────────────────────────────────────────
     HANDLE("handle"),
+    /**
+     * Cryptographic hash string. Accepts a {@link HashAlgorithm} qualifier (13 algorithms).
+     * <p>Available: {@link HashAlgorithm#MD5}, {@link HashAlgorithm#SHA1},
+     * {@link HashAlgorithm#SHA256}, {@link HashAlgorithm#SHA512},
+     * {@link HashAlgorithm#SHA3_256}, {@link HashAlgorithm#SHA3_512},
+     * {@link HashAlgorithm#CRC32}, {@link HashAlgorithm#ADLER32}, {@link HashAlgorithm#CRC16},
+     * {@link HashAlgorithm#SHA224}, {@link HashAlgorithm#SHA384},
+     * {@link HashAlgorithm#SHA3_224}, {@link HashAlgorithm#SHA3_384}.
+     * <p>Type-safe: {@code MockJutsu.generate(HASH, locale, HashAlgorithm.SHA256)}
+     * or {@code MockJutsu.hash().algorithm(HashAlgorithm.SHA512).generate()}.
+     */
     HASH("hash"),
     HASHTAG("hashtag"),
     HEIGHT("height"),
@@ -207,6 +311,12 @@ public enum DataType {
     IATA_TICKET("iata_ticket"),
     IBAN("iban"),
     ICCID("iccid"),
+    /**
+     * ICD-10 diagnostic code. Without qualifier returns the bare code (e.g. {@code "J18.9"}).
+     * Accepts qualifier {@code "desc"} (or {@code "true"} / {@code "description"}) to return
+     * a JSON object: {@code {"code":"J18.9","description":"Unspecified pneumonia"}}.
+     * <p>Example: {@code MockJutsu.generate("icd10", "TR", "desc")}.
+     */
     ICD10("icd10"),
     IDEMPOTENCYKEY("idempotencykey"),
     IFSC_CODE("ifsc_code"),
@@ -255,6 +365,11 @@ public enum DataType {
     KYC_DOCUMENT_TYPE("kyc_document_type"),
 
     // ── L ─────────────────────────────────────────────────────────────────────
+    /**
+     * Last name localised to the requested locale. Accepts a {@link Gender} qualifier.
+     * <p>Available genders: {@link Gender#MALE}, {@link Gender#FEMALE}.
+     * <p>Type-safe: {@code MockJutsu.generate(LASTNAME, locale, Gender.FEMALE)}.
+     */
     LASTNAME("lastname"),
     LATITUDE("latitude"),
     LEI("lei"),
@@ -273,6 +388,12 @@ public enum DataType {
     MIC("mic"),
     MICR_LINE("micr_line"),
     MICR_LINE_MASKED("micr_line_masked"),
+    /**
+     * BIP-39 mnemonic seed phrase. Accepts an integer word-count qualifier.
+     * <p>Valid word counts: {@code 12} (default), {@code 15}, {@code 18}, {@code 21}, {@code 24}.
+     * Any other value defaults to 12.
+     * <p>Builder: {@code MockJutsu.mnemonic().words(24).generate()}.
+     */
     MNEMONIC("mnemonic"),
     MORTGAGE_RATE("mortgage_rate"),
     MORTGAGE_RATE_MASKED("mortgage_rate_masked"),
@@ -322,6 +443,11 @@ public enum DataType {
     ORDER_ID("order_id"),
 
     // ── P ─────────────────────────────────────────────────────────────────────
+    /**
+     * ISO 20022 pain.001 customer credit transfer XML. Accepts qualifier {@code "strict"}
+     * to enforce ISO 9362 strict BIC validation (position 8 must be {@code '0'}).
+     * <p>Builder: {@code MockJutsu.pain001().strict().generate()}.
+     */
     PAIN001("pain001"),
     PASSPORT("passport"),
     PASSWORD("password"),
@@ -357,6 +483,11 @@ public enum DataType {
     PRIVATE_IP("private_ip"),
     PRODUCT_NAME("product_name"),
     PROMETHEUS_METRICS("prometheus_metrics"),
+    /**
+     * PSD2 open-banking consent object (signed JWT). Accepts a decimal amount qualifier
+     * (e.g. {@code "1500.00"}) that is embedded in the JWT payload.
+     * <p>Builder: {@code MockJutsu.psd2Consent().amount(1500.00).generate()}.
+     */
     PSD2_CONSENT("psd2_consent"),
     PT_CC("pt_cc"),
     PUBLIC_IP("public_ip"),
@@ -367,6 +498,11 @@ public enum DataType {
     // ── R ─────────────────────────────────────────────────────────────────────
     RATING("rating"),
     REQUESTID("requestid"),
+    /**
+     * Random string matching a provided regular expression. Accepts a regex qualifier
+     * (e.g. {@code "[A-Z]{3}-[0-9]{4}"}, {@code "[a-z0-9]{8}"}).
+     * <p>Builder: {@code MockJutsu.reverseRegex().pattern("[A-Z]{3}-[0-9]{4}").generate()}.
+     */
     REVERSE_REGEX("reverse_regex"),
     RFID_TAG("rfid_tag"),
     RFID_UID("rfid_uid"),
@@ -382,6 +518,11 @@ public enum DataType {
     SAR_NUMBER_MASKED("sar_number_masked"),
     SE_PERSONNUMMER("se_personnummer"),
     SEDOL("sedol"),
+    /**
+     * SEPA Direct Debit mandate XML. Accepts qualifier {@code "strict"} to enforce
+     * ISO 9362 strict BIC validation (position 8 must be {@code '0'}).
+     * <p>Builder: {@code MockJutsu.sepaMandate().strict().generate()}.
+     */
     SEPA_MANDATE("sepa_mandate"),
     SEPA_QR("sepa_qr"),
     SEPA_REF("sepa_ref"),
@@ -389,6 +530,11 @@ public enum DataType {
     SETTLEMENT_DATE("settlement_date"),
     SG_UEN("sg_uen"),
     SGK("sgk"),
+    /**
+     * HMAC-SHA256 request signature. Accepts a {@code "secret|payload"} qualifier
+     * (e.g. {@code "mySecret|{\"amount\":100}"}). Both parts are random if qualifier is omitted.
+     * <p>Builder: {@code MockJutsu.signature().secret("mySecret").payload("{...}").generate()}.
+     */
     SIGNATURE("signature"),
     SIREN("siren"),
     SIRET("siret"),
@@ -402,6 +548,11 @@ public enum DataType {
     STOCK_EXCHANGE("stock_exchange"),
     STOCK_TICKER("stock_ticker"),
     SWIFT("swift"),
+    /**
+     * SWIFT MT103 single-customer credit transfer message. Accepts qualifier {@code "strict"}
+     * to enforce ISO 9362 strict BIC validation (position 8 must be {@code '0'}).
+     * <p>Builder: {@code MockJutsu.swiftMt103().strict().generate()}.
+     */
     SWIFT_MT103("swift_mt103"),
 
     // ── T ─────────────────────────────────────────────────────────────────────
@@ -422,6 +573,14 @@ public enum DataType {
     TPP_ID("tpp_id"),
     TRACK1_DATA("track1_data"),
     TRACK2_DATA("track2_data"),
+    /**
+     * Parcel tracking number. Accepts a {@link Carrier} qualifier.
+     * <p>Available carriers: {@link Carrier#USPS} (22-digit numeric),
+     * {@link Carrier#UPS} ({@code 1Z...} alphanumeric),
+     * {@link Carrier#FEDEX} (12-digit numeric).
+     * <p>Type-safe: {@code MockJutsu.generate(TRACKING_NUMBER, locale, Carrier.FEDEX)}
+     * or {@code MockJutsu.trackingNumber().carrier(Carrier.UPS).generate()}.
+     */
     TRACKING_NUMBER("tracking_number"),
     TRANSACTION("transaction"),
     TRANSACTION_DESCRIPTION("transaction_description"),
@@ -429,6 +588,12 @@ public enum DataType {
     TRANSACTION_ID("transaction_id"),
     TRANSACTION_TYPE("transaction_type"),
     TVA("tva"),
+    /**
+     * Blockchain transaction hash. Accepts a {@link CryptoCurrency} qualifier.
+     * <p>Available currencies: {@link CryptoCurrency#BTC} (64-char hex),
+     * {@link CryptoCurrency#ETH} ({@code 0x...} 66-char hex).
+     * <p>Type-safe: {@code MockJutsu.generate(TX_HASH, locale, CryptoCurrency.ETH)}.
+     */
     TX_HASH("tx_hash"),
 
     // ── U ─────────────────────────────────────────────────────────────────────

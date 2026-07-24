@@ -31,6 +31,29 @@ implementation 'io.github.altansayan:mockjutsu-core:1.0.0'
 
 ---
 
+## Imports
+
+Add these to the top of your Java file. Only include the qualifier enums you actually use.
+
+```java
+// ── Core (required) ───────────────────────────────────────────────────────
+import static io.github.altansayan.mockjutsu.MockJutsu.*;            // generate(), bulk(), builders + all 390 DataType constants
+import static io.github.altansayan.mockjutsu.enums.MockJutsuLocale.*; // TR, US, DE, GB, FR, RU, CA, AU, JP, KR, CN, BR, IN ...
+
+// ── Qualifier enums (add as needed) ──────────────────────────────────────
+import static io.github.altansayan.mockjutsu.enums.Network.*;        // VISA, MC, AMEX, TROY, DISCOVER, UNIONPAY, JCB, MAESTRO
+import static io.github.altansayan.mockjutsu.enums.Gender.*;         // MALE, FEMALE
+import static io.github.altansayan.mockjutsu.enums.HashAlgorithm.*;  // MD5, SHA1, SHA256, SHA512, BLAKE2B
+import static io.github.altansayan.mockjutsu.enums.ColorFormat.*;    // HEX, RGB, HSL, NAMED
+import static io.github.altansayan.mockjutsu.enums.Carrier.*;        // TURKCELL, VODAFONE, TURK_TELEKOM, ATT, VERIZON, T_MOBILE, O2, DEUTSCHE_TELEKOM
+import static io.github.altansayan.mockjutsu.enums.CryptoCurrency.*; // BTC, ETH, SOL, BNB, ADA, XRP, DOT, AVAX, MATIC, LINK
+import static io.github.altansayan.mockjutsu.enums.AccountType.*;    // CHECKING, SAVINGS, CURRENT, BUSINESS_CHECKING, MONEY_MARKET, CD, INVESTMENT
+```
+
+> **Tip:** Your IDE (IntelliJ / VS Code) will suggest missing static imports automatically as you type.
+
+---
+
 ## Quick Start
 
 ### String API — dynamic / scriptable

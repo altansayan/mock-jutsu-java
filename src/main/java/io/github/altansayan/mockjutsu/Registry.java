@@ -276,7 +276,7 @@ public final class Registry {
         if (FINANCIAL_TYPES.contains(type))       return FinancialGen.generate(type, locale, qualifier);
         if (COMM_TYPES.contains(type))            return CommunicationGen.generate(type, locale);
         if (META_TYPES.contains(type))            return MetaGen.generate(type, locale, qualifier);
-        if (BANKING_TYPES.contains(type))         return BankingGen.generate(type, locale);
+        if (BANKING_TYPES.contains(type))         return BankingGen.generate(type, locale, qualifier);
         if (CORPORATE_TYPES.contains(type))       return CorporateGen.generate(type, locale);
         if (HEALTH_TYPES.contains(type))          return HealthGen.generate(type, locale, qualifier);
         if (COMMERCE_TYPES.contains(type))        return CommerceGen.generate(type, locale);

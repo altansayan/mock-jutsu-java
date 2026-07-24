@@ -88,6 +88,10 @@ public final class BankingGen {
     private static final String[] TX_TYPES       = {"CREDIT","DEBIT","TRANSFER","REFUND","REVERSAL","CHARGEBACK","FEE","INTEREST"};
 
     public static String generate(String type, String locale) {
+        return generate(type, locale, "");
+    }
+
+    public static String generate(String type, String locale, String qualifier) {
         ThreadLocalRandom rng = ThreadLocalRandom.current();
         return switch (type) {
             case "swift","bic"           -> bic(rng, locale, false);
@@ -99,7 +103,9 @@ public final class BankingGen {
             case "bank_name"             -> bankName(rng, locale);
             case "sepa_ref"              -> sepaRef(rng);
             case "creditor_ref"          -> creditorRef(rng);
-            case "account_type"          -> pick(rng, ACCOUNT_TYPES);
+            case "account_type"          -> (qualifier != null && !qualifier.isBlank())
+                                               ? qualifier
+                                               : pick(rng, ACCOUNT_TYPES);
             case "transaction_type"      -> pick(rng, TX_TYPES);
             case "transaction_description" -> transactionDescription(rng, locale);
             case "ifsc_code"             -> ifscCode(rng);

@@ -1,5 +1,6 @@
 package io.github.altansayan.mockjutsu;
 
+import io.github.altansayan.mockjutsu.enums.AccountType;
 import io.github.altansayan.mockjutsu.enums.Carrier;
 import io.github.altansayan.mockjutsu.enums.ColorFormat;
 import io.github.altansayan.mockjutsu.enums.CryptoCurrency;
@@ -57,7 +58,397 @@ import java.util.List;
 public final class MockJutsu {
 
     private MockJutsu() {}
-
+    // ── DataType re-exports ── MockJutsu.CARDNUM gibi kullanım için ─────────────────────────
+    public static final DataType THREE_DS_CAVV = DataType.THREE_DS_CAVV;
+    public static final DataType THREE_DS_ECI = DataType.THREE_DS_ECI;
+    public static final DataType ACCOUNT_NUMBER = DataType.ACCOUNT_NUMBER;
+    public static final DataType ACCOUNT_NUMBER_MASKED = DataType.ACCOUNT_NUMBER_MASKED;
+    public static final DataType ACCOUNT_TYPE = DataType.ACCOUNT_TYPE;
+    public static final DataType ADDRESS_CITY = DataType.ADDRESS_CITY;
+    public static final DataType ADDRESS_FULL = DataType.ADDRESS_FULL;
+    public static final DataType ADDRESS_STREET = DataType.ADDRESS_STREET;
+    public static final DataType AGE = DataType.AGE;
+    public static final DataType AI_EMBEDDING = DataType.AI_EMBEDDING;
+    public static final DataType AI_SPARSE_VECTOR = DataType.AI_SPARSE_VECTOR;
+    public static final DataType AI_VECTOR = DataType.AI_VECTOR;
+    public static final DataType AML_RISK_RATING = DataType.AML_RISK_RATING;
+    public static final DataType APDU = DataType.APDU;
+    public static final DataType API_KEY = DataType.API_KEY;
+    public static final DataType APPPASSWORD = DataType.APPPASSWORD;
+    public static final DataType APR = DataType.APR;
+    public static final DataType AR_CUIT = DataType.AR_CUIT;
+    public static final DataType AR_DNI = DataType.AR_DNI;
+    public static final DataType ASN1_FUZZ = DataType.ASN1_FUZZ;
+    public static final DataType ATM_SESSION = DataType.ATM_SESSION;
+    public static final DataType AU_ABN = DataType.AU_ABN;
+    public static final DataType AU_ACN = DataType.AU_ACN;
+    public static final DataType AU_TFN = DataType.AU_TFN;
+    public static final DataType BALANCE = DataType.BALANCE;
+    public static final DataType BANK_NAME = DataType.BANK_NAME;
+    public static final DataType BEARERTOKEN = DataType.BEARERTOKEN;
+    public static final DataType BG_EGN = DataType.BG_EGN;
+    public static final DataType BIC = DataType.BIC;
+    public static final DataType BIK_CODE = DataType.BIK_CODE;
+    public static final DataType BIO = DataType.BIO;
+    public static final DataType BIRTHDATE = DataType.BIRTHDATE;
+    public static final DataType BLOCK_HASH = DataType.BLOCK_HASH;
+    public static final DataType BLOCKCHAIN_NETWORK = DataType.BLOCKCHAIN_NETWORK;
+    public static final DataType BLOOD_TYPE = DataType.BLOOD_TYPE;
+    public static final DataType BLOODTYPE = DataType.BLOODTYPE;
+    public static final DataType BMI = DataType.BMI;
+    public static final DataType BOND_YIELD = DataType.BOND_YIELD;
+    public static final DataType BR_CNPJ = DataType.BR_CNPJ;
+    public static final DataType BR_CPF = DataType.BR_CPF;
+    public static final DataType BROWSER_ENGINE = DataType.BROWSER_ENGINE;
+    public static final DataType BROWSER_NAME = DataType.BROWSER_NAME;
+    public static final DataType BROWSER_VERSION = DataType.BROWSER_VERSION;
+    public static final DataType BSB_CODE = DataType.BSB_CODE;
+    public static final DataType BTC_ADDRESS = DataType.BTC_ADDRESS;
+    public static final DataType BTC_WALLET = DataType.BTC_WALLET;
+    public static final DataType CA_BN = DataType.CA_BN;
+    public static final DataType CAMT053 = DataType.CAMT053;
+    public static final DataType CAN_FRAME = DataType.CAN_FRAME;
+    public static final DataType CARDCATEGORY = DataType.CARDCATEGORY;
+    public static final DataType CARDNETWORK = DataType.CARDNETWORK;
+    public static final DataType CARDNUM = DataType.CARDNUM;
+    public static final DataType CARDOWNER = DataType.CARDOWNER;
+    public static final DataType CARDSTATUS = DataType.CARDSTATUS;
+    public static final DataType CARDTYPE = DataType.CARDTYPE;
+    public static final DataType CATEGORY = DataType.CATEGORY;
+    public static final DataType CDC_EVENT = DataType.CDC_EVENT;
+    public static final DataType CDD_LEVEL = DataType.CDD_LEVEL;
+    public static final DataType CEF_LOG = DataType.CEF_LOG;
+    public static final DataType CHECK_NUMBER = DataType.CHECK_NUMBER;
+    public static final DataType CHECK_NUMBER_MASKED = DataType.CHECK_NUMBER_MASKED;
+    public static final DataType CHIP_DATA = DataType.CHIP_DATA;
+    public static final DataType CL_RUT = DataType.CL_RUT;
+    public static final DataType CLAIM_NUMBER = DataType.CLAIM_NUMBER;
+    public static final DataType CLAIM_NUMBER_MASKED = DataType.CLAIM_NUMBER_MASKED;
+    public static final DataType CLAIM_STATUS = DataType.CLAIM_STATUS;
+    public static final DataType CLIENTVERSION = DataType.CLIENTVERSION;
+    public static final DataType CN_RIC = DataType.CN_RIC;
+    public static final DataType CO_NIT = DataType.CO_NIT;
+    public static final DataType COLOR = DataType.COLOR;
+    public static final DataType COMPANY_NAME = DataType.COMPANY_NAME;
+    public static final DataType CONSENT_ID = DataType.CONSENT_ID;
+    public static final DataType CONSENT_ID_MASKED = DataType.CONSENT_ID_MASKED;
+    public static final DataType COORDINATES = DataType.COORDINATES;
+    public static final DataType CORRELATIONID = DataType.CORRELATIONID;
+    public static final DataType COUNTRY_CODE = DataType.COUNTRY_CODE;
+    public static final DataType COUPON_RATE = DataType.COUPON_RATE;
+    public static final DataType COVERAGE_LIMIT = DataType.COVERAGE_LIMIT;
+    public static final DataType CREDIT_CARD_ISSUER_NAME = DataType.CREDIT_CARD_ISSUER_NAME;
+    public static final DataType CREDIT_LIMIT = DataType.CREDIT_LIMIT;
+    public static final DataType CREDIT_LIMIT_MASKED = DataType.CREDIT_LIMIT_MASKED;
+    public static final DataType CREDIT_SCORE = DataType.CREDIT_SCORE;
+    public static final DataType CREDIT_SCORE_MODEL = DataType.CREDIT_SCORE_MODEL;
+    public static final DataType CREDIT_SCORE_TIER = DataType.CREDIT_SCORE_TIER;
+    public static final DataType CREDIT_UTILIZATION = DataType.CREDIT_UTILIZATION;
+    public static final DataType CREDITOR_REF = DataType.CREDITOR_REF;
+    public static final DataType CRN = DataType.CRN;
+    public static final DataType CRYPTO_ADDRESS = DataType.CRYPTO_ADDRESS;
+    public static final DataType CRYPTOCURRENCY_NAME = DataType.CRYPTOCURRENCY_NAME;
+    public static final DataType CURRENCY = DataType.CURRENCY;
+    public static final DataType CUSIP = DataType.CUSIP;
+    public static final DataType CVE_ID = DataType.CVE_ID;
+    public static final DataType CVV3 = DataType.CVV3;
+    public static final DataType CVV4 = DataType.CVV4;
+    public static final DataType DATE_BETWEEN = DataType.DATE_BETWEEN;
+    public static final DataType DATE_THIS_MONTH = DataType.DATE_THIS_MONTH;
+    public static final DataType DATE_THIS_YEAR = DataType.DATE_THIS_YEAR;
+    public static final DataType DE_IDNR = DataType.DE_IDNR;
+    public static final DataType DE_STNR = DataType.DE_STNR;
+    public static final DataType DEDUCTIBLE = DataType.DEDUCTIBLE;
+    public static final DataType DEFI_POSITION_TYPE = DataType.DEFI_POSITION_TYPE;
+    public static final DataType DEFI_PROTOCOL_NAME = DataType.DEFI_PROTOCOL_NAME;
+    public static final DataType DEVICEID = DataType.DEVICEID;
+    public static final DataType DHL_TRACKING = DataType.DHL_TRACKING;
+    public static final DataType DICOM_UID = DataType.DICOM_UID;
+    public static final DataType DK_CPR = DataType.DK_CPR;
+    public static final DataType DOMAIN = DataType.DOMAIN;
+    public static final DataType DRONE_TELEMETRY = DataType.DRONE_TELEMETRY;
+    public static final DataType EAN13 = DataType.EAN13;
+    public static final DataType EAN8 = DataType.EAN8;
+    public static final DataType EDI_850 = DataType.EDI_850;
+    public static final DataType EDIFACT_ORDERS = DataType.EDIFACT_ORDERS;
+    public static final DataType EE_IK = DataType.EE_IK;
+    public static final DataType EG_TN = DataType.EG_TN;
+    public static final DataType EIN = DataType.EIN;
+    public static final DataType EMAIL = DataType.EMAIL;
+    public static final DataType EMPLOYER_ID = DataType.EMPLOYER_ID;
+    public static final DataType EMV_ARQC = DataType.EMV_ARQC;
+    public static final DataType EMV_ATC = DataType.EMV_ATC;
+    public static final DataType EMV_IAD = DataType.EMV_IAD;
+    public static final DataType EMV_QR_ATM = DataType.EMV_QR_ATM;
+    public static final DataType EMV_QR_P2P = DataType.EMV_QR_P2P;
+    public static final DataType EMV_QR_POS = DataType.EMV_QR_POS;
+    public static final DataType EPC = DataType.EPC;
+    public static final DataType ES_CCC = DataType.ES_CCC;
+    public static final DataType ES_DNI = DataType.ES_DNI;
+    public static final DataType ES_NIE = DataType.ES_NIE;
+    public static final DataType ETH_ADDRESS = DataType.ETH_ADDRESS;
+    public static final DataType ETH_WALLET = DataType.ETH_WALLET;
+    public static final DataType EVENT_STREAM = DataType.EVENT_STREAM;
+    public static final DataType EXPIRY = DataType.EXPIRY;
+    public static final DataType EXPIRYMONTH = DataType.EXPIRYMONTH;
+    public static final DataType EXPIRYYEAR = DataType.EXPIRYYEAR;
+    public static final DataType FDR_RECORD = DataType.FDR_RECORD;
+    public static final DataType FEDWIRE = DataType.FEDWIRE;
+    public static final DataType FHIR_PATIENT = DataType.FHIR_PATIENT;
+    public static final DataType FI_HETU = DataType.FI_HETU;
+    public static final DataType FIDO2_ASSERTION = DataType.FIDO2_ASSERTION;
+    public static final DataType FIGI = DataType.FIGI;
+    public static final DataType FIRSTNAME = DataType.FIRSTNAME;
+    public static final DataType FIX_MESSAGE = DataType.FIX_MESSAGE;
+    public static final DataType FOLLOWER_COUNT = DataType.FOLLOWER_COUNT;
+    public static final DataType FOREX_PAIR = DataType.FOREX_PAIR;
+    public static final DataType FOREX_RATE = DataType.FOREX_RATE;
+    public static final DataType FULLNAME = DataType.FULLNAME;
+    public static final DataType FUTURE_DATE = DataType.FUTURE_DATE;
+    public static final DataType FUTURE_DATETIME = DataType.FUTURE_DATETIME;
+    public static final DataType GAS_LIMIT = DataType.GAS_LIMIT;
+    public static final DataType GAS_PRICE = DataType.GAS_PRICE;
+    public static final DataType GENDER = DataType.GENDER;
+    public static final DataType GS1_128 = DataType.GS1_128;
+    public static final DataType HANDLE = DataType.HANDLE;
+    public static final DataType HASH = DataType.HASH;
+    public static final DataType HASHTAG = DataType.HASHTAG;
+    public static final DataType HEIGHT = DataType.HEIGHT;
+    public static final DataType HL7_MESSAGE = DataType.HL7_MESSAGE;
+    public static final DataType HOSTNAME = DataType.HOSTNAME;
+    public static final DataType HR_OIB = DataType.HR_OIB;
+    public static final DataType HRB = DataType.HRB;
+    public static final DataType HTTP_METHOD = DataType.HTTP_METHOD;
+    public static final DataType HTTP_STATUS_CODE = DataType.HTTP_STATUS_CODE;
+    public static final DataType IATA_TICKET = DataType.IATA_TICKET;
+    public static final DataType IBAN = DataType.IBAN;
+    public static final DataType ICCID = DataType.ICCID;
+    public static final DataType ICD10 = DataType.ICD10;
+    public static final DataType IDEMPOTENCYKEY = DataType.IDEMPOTENCYKEY;
+    public static final DataType IFSC_CODE = DataType.IFSC_CODE;
+    public static final DataType IL_IDNR = DataType.IL_IDNR;
+    public static final DataType IMEI = DataType.IMEI;
+    public static final DataType IMEI2 = DataType.IMEI2;
+    public static final DataType IMO_NUMBER = DataType.IMO_NUMBER;
+    public static final DataType IMSI = DataType.IMSI;
+    public static final DataType IN_AADHAAR = DataType.IN_AADHAAR;
+    public static final DataType IN_EPIC = DataType.IN_EPIC;
+    public static final DataType IN_GSTIN = DataType.IN_GSTIN;
+    public static final DataType IN_PAN = DataType.IN_PAN;
+    public static final DataType INN = DataType.INN;
+    public static final DataType INN_INDIVIDUAL = DataType.INN_INDIVIDUAL;
+    public static final DataType INSURANCE_ID = DataType.INSURANCE_ID;
+    public static final DataType INVOICE_NUMBER = DataType.INVOICE_NUMBER;
+    public static final DataType INVOICENUMBER = DataType.INVOICENUMBER;
+    public static final DataType IPV4 = DataType.IPV4;
+    public static final DataType IPV6 = DataType.IPV6;
+    public static final DataType IR_NEC = DataType.IR_NEC;
+    public static final DataType IR_PRONTO = DataType.IR_PRONTO;
+    public static final DataType IR_RAW = DataType.IR_RAW;
+    public static final DataType IR_RC5 = DataType.IR_RC5;
+    public static final DataType ISBN10 = DataType.ISBN10;
+    public static final DataType ISBN13 = DataType.ISBN13;
+    public static final DataType ISIN = DataType.ISIN;
+    public static final DataType ISO8583_AUTH_REQUEST = DataType.ISO8583_AUTH_REQUEST;
+    public static final DataType ISO8583_AUTH_RESPONSE = DataType.ISO8583_AUTH_RESPONSE;
+    public static final DataType ISO8583_REVERSAL = DataType.ISO8583_REVERSAL;
+    public static final DataType ISSUER = DataType.ISSUER;
+    public static final DataType IT_CODICEFISCALE = DataType.IT_CODICEFISCALE;
+    public static final DataType JOB_TITLE = DataType.JOB_TITLE;
+    public static final DataType JOBTITLE = DataType.JOBTITLE;
+    public static final DataType JP_CN = DataType.JP_CN;
+    public static final DataType JP_IN = DataType.JP_IN;
+    public static final DataType JWKS = DataType.JWKS;
+    public static final DataType JWT = DataType.JWT;
+    public static final DataType JWT_ATTACK = DataType.JWT_ATTACK;
+    public static final DataType KPP = DataType.KPP;
+    public static final DataType KR_BRN = DataType.KR_BRN;
+    public static final DataType KR_RRN = DataType.KR_RRN;
+    public static final DataType KYC_DOCUMENT_TYPE = DataType.KYC_DOCUMENT_TYPE;
+    public static final DataType LASTNAME = DataType.LASTNAME;
+    public static final DataType LATITUDE = DataType.LATITUDE;
+    public static final DataType LEI = DataType.LEI;
+    public static final DataType LICENSE = DataType.LICENSE;
+    public static final DataType LIQUIDITY_POOL_ID = DataType.LIQUIDITY_POOL_ID;
+    public static final DataType LIQUIDITY_POOL_ID_MASKED = DataType.LIQUIDITY_POOL_ID_MASKED;
+    public static final DataType LOAN_TYPE = DataType.LOAN_TYPE;
+    public static final DataType LONGITUDE = DataType.LONGITUDE;
+    public static final DataType LORA_PACKET = DataType.LORA_PACKET;
+    public static final DataType LT_ASMENS = DataType.LT_ASMENS;
+    public static final DataType MAC_ADDRESS = DataType.MAC_ADDRESS;
+    public static final DataType MARKET_TICK = DataType.MARKET_TICK;
+    public static final DataType MERSIS = DataType.MERSIS;
+    public static final DataType MIC = DataType.MIC;
+    public static final DataType MICR_LINE = DataType.MICR_LINE;
+    public static final DataType MICR_LINE_MASKED = DataType.MICR_LINE_MASKED;
+    public static final DataType MNEMONIC = DataType.MNEMONIC;
+    public static final DataType MORTGAGE_RATE = DataType.MORTGAGE_RATE;
+    public static final DataType MORTGAGE_RATE_MASKED = DataType.MORTGAGE_RATE_MASKED;
+    public static final DataType MORTGAGE_TERM = DataType.MORTGAGE_TERM;
+    public static final DataType MQTT_PAYLOAD = DataType.MQTT_PAYLOAD;
+    public static final DataType MRZ_TD1 = DataType.MRZ_TD1;
+    public static final DataType MRZ_TD3 = DataType.MRZ_TD3;
+    public static final DataType MSISDN = DataType.MSISDN;
+    public static final DataType MT940 = DataType.MT940;
+    public static final DataType MX_CURP = DataType.MX_CURP;
+    public static final DataType MX_RFC = DataType.MX_RFC;
+    public static final DataType MY_NRIC = DataType.MY_NRIC;
+    public static final DataType NACHA_ACH = DataType.NACHA_ACH;
+    public static final DataType NATIONALID = DataType.NATIONALID;
+    public static final DataType NATIONALITY = DataType.NATIONALITY;
+    public static final DataType NAVMESH_PATH = DataType.NAVMESH_PATH;
+    public static final DataType NDEF_TEXT = DataType.NDEF_TEXT;
+    public static final DataType NDEF_URI = DataType.NDEF_URI;
+    public static final DataType NFC_ATQA = DataType.NFC_ATQA;
+    public static final DataType NFC_SAK = DataType.NFC_SAK;
+    public static final DataType NFC_TAG = DataType.NFC_TAG;
+    public static final DataType NFC_UID = DataType.NFC_UID;
+    public static final DataType NFT_TOKEN_ID = DataType.NFT_TOKEN_ID;
+    public static final DataType NHS_NUMBER = DataType.NHS_NUMBER;
+    public static final DataType NHSNUMBER = DataType.NHSNUMBER;
+    public static final DataType NIN = DataType.NIN;
+    public static final DataType NL_BSN = DataType.NL_BSN;
+    public static final DataType NMEA_GPGGA = DataType.NMEA_GPGGA;
+    public static final DataType NMEA_GPRMC = DataType.NMEA_GPRMC;
+    public static final DataType NO_FODSELSNUMMER = DataType.NO_FODSELSNUMMER;
+    public static final DataType NPI = DataType.NPI;
+    public static final DataType NSIN = DataType.NSIN;
+    public static final DataType NZ_IRD = DataType.NZ_IRD;
+    public static final DataType OBD2_RESPONSE = DataType.OBD2_RESPONSE;
+    public static final DataType OCCUPATION = DataType.OCCUPATION;
+    public static final DataType OGRN = DataType.OGRN;
+    public static final DataType OHLCV_CANDLES = DataType.OHLCV_CANDLES;
+    public static final DataType OIDC_TOKEN = DataType.OIDC_TOKEN;
+    public static final DataType OIDC_TOKEN_SET = DataType.OIDC_TOKEN_SET;
+    public static final DataType ONBOARDING_METHOD = DataType.ONBOARDING_METHOD;
+    public static final DataType OPENMETRICS_SNAPSHOT = DataType.OPENMETRICS_SNAPSHOT;
+    public static final DataType OPTION_CONTRACT = DataType.OPTION_CONTRACT;
+    public static final DataType ORDER_ID = DataType.ORDER_ID;
+    public static final DataType PAIN001 = DataType.PAIN001;
+    public static final DataType PASSPORT = DataType.PASSPORT;
+    public static final DataType PASSWORD = DataType.PASSWORD;
+    public static final DataType PASSWORD_HASH = DataType.PASSWORD_HASH;
+    public static final DataType PAST_DATE = DataType.PAST_DATE;
+    public static final DataType PAST_DATETIME = DataType.PAST_DATETIME;
+    public static final DataType PATRONYMIC = DataType.PATRONYMIC;
+    public static final DataType PAYE = DataType.PAYE;
+    public static final DataType PAYMENT_REFERENCE = DataType.PAYMENT_REFERENCE;
+    public static final DataType PAYMENT_REFERENCE_MASKED = DataType.PAYMENT_REFERENCE_MASKED;
+    public static final DataType PCAP_HEX = DataType.PCAP_HEX;
+    public static final DataType PEP_STATUS = DataType.PEP_STATUS;
+    public static final DataType PHONE = DataType.PHONE;
+    public static final DataType PHONE_AREA = DataType.PHONE_AREA;
+    public static final DataType PHONE_COUNTRY = DataType.PHONE_COUNTRY;
+    public static final DataType PHONE_LOCAL = DataType.PHONE_LOCAL;
+    public static final DataType PIN = DataType.PIN;
+    public static final DataType PIN_BLOCK = DataType.PIN_BLOCK;
+    public static final DataType PIN_BLOCK_FMT3 = DataType.PIN_BLOCK_FMT3;
+    public static final DataType PK_CNIC = DataType.PK_CNIC;
+    public static final DataType PL_PESEL = DataType.PL_PESEL;
+    public static final DataType PLATE = DataType.PLATE;
+    public static final DataType PNR_CODE = DataType.PNR_CODE;
+    public static final DataType POLICY_NUMBER = DataType.POLICY_NUMBER;
+    public static final DataType POLICY_NUMBER_MASKED = DataType.POLICY_NUMBER_MASKED;
+    public static final DataType PORT_NUMBER = DataType.PORT_NUMBER;
+    public static final DataType PORTFOLIO_ID = DataType.PORTFOLIO_ID;
+    public static final DataType PORTFOLIO_ID_MASKED = DataType.PORTFOLIO_ID_MASKED;
+    public static final DataType POS_RECEIPT = DataType.POS_RECEIPT;
+    public static final DataType POSTALCODE = DataType.POSTALCODE;
+    public static final DataType PREMIUM_AMOUNT = DataType.PREMIUM_AMOUNT;
+    public static final DataType PREMIUM_AMOUNT_MASKED = DataType.PREMIUM_AMOUNT_MASKED;
+    public static final DataType PRIVATE_IP = DataType.PRIVATE_IP;
+    public static final DataType PRODUCT_NAME = DataType.PRODUCT_NAME;
+    public static final DataType PROMETHEUS_METRICS = DataType.PROMETHEUS_METRICS;
+    public static final DataType PSD2_CONSENT = DataType.PSD2_CONSENT;
+    public static final DataType PT_CC = DataType.PT_CC;
+    public static final DataType PUBLIC_IP = DataType.PUBLIC_IP;
+    public static final DataType QUATERNION = DataType.QUATERNION;
+    public static final DataType RATING = DataType.RATING;
+    public static final DataType REQUESTID = DataType.REQUESTID;
+    public static final DataType REVERSE_REGEX = DataType.REVERSE_REGEX;
+    public static final DataType RFID_TAG = DataType.RFID_TAG;
+    public static final DataType RFID_UID = DataType.RFID_UID;
+    public static final DataType RIC = DataType.RIC;
+    public static final DataType RO_CNP = DataType.RO_CNP;
+    public static final DataType RO_CUI = DataType.RO_CUI;
+    public static final DataType ROUTING_NUMBER = DataType.ROUTING_NUMBER;
+    public static final DataType RVN = DataType.RVN;
+    public static final DataType SANCTIONS_HIT = DataType.SANCTIONS_HIT;
+    public static final DataType SAR_NUMBER = DataType.SAR_NUMBER;
+    public static final DataType SAR_NUMBER_MASKED = DataType.SAR_NUMBER_MASKED;
+    public static final DataType SE_PERSONNUMMER = DataType.SE_PERSONNUMMER;
+    public static final DataType SEDOL = DataType.SEDOL;
+    public static final DataType SEPA_MANDATE = DataType.SEPA_MANDATE;
+    public static final DataType SEPA_QR = DataType.SEPA_QR;
+    public static final DataType SEPA_REF = DataType.SEPA_REF;
+    public static final DataType SESSIONID = DataType.SESSIONID;
+    public static final DataType SETTLEMENT_DATE = DataType.SETTLEMENT_DATE;
+    public static final DataType SG_UEN = DataType.SG_UEN;
+    public static final DataType SGK = DataType.SGK;
+    public static final DataType SIGNATURE = DataType.SIGNATURE;
+    public static final DataType SIREN = DataType.SIREN;
+    public static final DataType SIRET = DataType.SIRET;
+    public static final DataType SKU = DataType.SKU;
+    public static final DataType SLUG = DataType.SLUG;
+    public static final DataType SNILS = DataType.SNILS;
+    public static final DataType SOL_WALLET = DataType.SOL_WALLET;
+    public static final DataType SORT_CODE = DataType.SORT_CODE;
+    public static final DataType SSN = DataType.SSN;
+    public static final DataType SSN_MASKED = DataType.SSN_MASKED;
+    public static final DataType STOCK_EXCHANGE = DataType.STOCK_EXCHANGE;
+    public static final DataType STOCK_TICKER = DataType.STOCK_TICKER;
+    public static final DataType SWIFT = DataType.SWIFT;
+    public static final DataType SWIFT_MT103 = DataType.SWIFT_MT103;
+    public static final DataType TAX_RATE = DataType.TAX_RATE;
+    public static final DataType TAXID = DataType.TAXID;
+    public static final DataType TAXRATE = DataType.TAXRATE;
+    public static final DataType TCKN = DataType.TCKN;
+    public static final DataType TCKN_MASKED = DataType.TCKN_MASKED;
+    public static final DataType TH_PIN = DataType.TH_PIN;
+    public static final DataType TH_TIN = DataType.TH_TIN;
+    public static final DataType TIME_ONLY = DataType.TIME_ONLY;
+    public static final DataType TIMESTAMP = DataType.TIMESTAMP;
+    public static final DataType TIMESTAMP_ISO = DataType.TIMESTAMP_ISO;
+    public static final DataType TIMEZONE = DataType.TIMEZONE;
+    public static final DataType TLD = DataType.TLD;
+    public static final DataType TLE_SATELLITE = DataType.TLE_SATELLITE;
+    public static final DataType TOTP_CODE = DataType.TOTP_CODE;
+    public static final DataType TPP_ID = DataType.TPP_ID;
+    public static final DataType TRACK1_DATA = DataType.TRACK1_DATA;
+    public static final DataType TRACK2_DATA = DataType.TRACK2_DATA;
+    public static final DataType TRACKING_NUMBER = DataType.TRACKING_NUMBER;
+    public static final DataType TRANSACTION = DataType.TRANSACTION;
+    public static final DataType TRANSACTION_DESCRIPTION = DataType.TRANSACTION_DESCRIPTION;
+    public static final DataType TRANSACTION_DESCRIPTION_MASKED = DataType.TRANSACTION_DESCRIPTION_MASKED;
+    public static final DataType TRANSACTION_ID = DataType.TRANSACTION_ID;
+    public static final DataType TRANSACTION_TYPE = DataType.TRANSACTION_TYPE;
+    public static final DataType TVA = DataType.TVA;
+    public static final DataType TX_HASH = DataType.TX_HASH;
+    public static final DataType UBL_INVOICE = DataType.UBL_INVOICE;
+    public static final DataType UBO_OWNERSHIP_PERCENTAGE = DataType.UBO_OWNERSHIP_PERCENTAGE;
+    public static final DataType UBO_OWNERSHIP_PERCENTAGE_MASKED = DataType.UBO_OWNERSHIP_PERCENTAGE_MASKED;
+    public static final DataType UPCA = DataType.UPCA;
+    public static final DataType URI_PATH = DataType.URI_PATH;
+    public static final DataType URL = DataType.URL;
+    public static final DataType USERAGENT = DataType.USERAGENT;
+    public static final DataType USERNAME = DataType.USERNAME;
+    public static final DataType UST_ID = DataType.UST_ID;
+    public static final DataType USTID = DataType.USTID;
+    public static final DataType UTR = DataType.UTR;
+    public static final DataType UUID = DataType.UUID;
+    public static final DataType VAT_NUMBER = DataType.VAT_NUMBER;
+    public static final DataType VEHICLE = DataType.VEHICLE;
+    public static final DataType VIN = DataType.VIN;
+    public static final DataType VKN = DataType.VKN;
+    public static final DataType WALLET_LABEL = DataType.WALLET_LABEL;
+    public static final DataType WEBAUTHN_CREDENTIAL = DataType.WEBAUTHN_CREDENTIAL;
+    public static final DataType WEBHOOK_SIGNATURE = DataType.WEBHOOK_SIGNATURE;
+    public static final DataType WEIGHT = DataType.WEIGHT;
+    public static final DataType WIRE_ROUTING_NUMBER = DataType.WIRE_ROUTING_NUMBER;
+    public static final DataType X509_CERT = DataType.X509_CERT;
+    public static final DataType XMLDSIG = DataType.XMLDSIG;
+    public static final DataType YKN = DataType.YKN;
+    public static final DataType ZA_IDNR = DataType.ZA_IDNR;
     // ── String API ────────────────────────────────────────────────────────────
 
     /**
@@ -765,6 +1156,19 @@ public final class MockJutsu {
      * @since 1.0.0
      */
     public static CryptoAddressBuilder cryptoAddress() { return new CryptoAddressBuilder(); }
+    // ── Generic builders — tüm tipler için fluent API ────────────────────────────────────────
+    public static AccountTypeBuilder accountType() { return new AccountTypeBuilder(); }
+
+    /**
+     * Generates an account type with a specific {@link AccountType}.
+     * <p>Available: {@link AccountType#CHECKING}, {@link AccountType#SAVINGS},
+     * {@link AccountType#CURRENT}, {@link AccountType#BUSINESS_CHECKING},
+     * {@link AccountType#MONEY_MARKET}, {@link AccountType#CD}, {@link AccountType#INVESTMENT}.
+     */
+    public static String generate(DataType type, MockJutsuLocale locale, AccountType accountType) {
+        return Registry.generate(type.key(), locale.code(), accountType.value());
+    }
+
 
     // ── Builder classes ───────────────────────────────────────────────────────
 
@@ -1422,5 +1826,29 @@ public final class MockJutsu {
 
         @Override
         protected String qualifier() { return currency.key(); }
+    }
+
+    /**
+     * Fluent builder for account type generation.
+     *
+     * <pre>{@code
+     * String t = MockJutsu.accountType().locale(CA).type(AccountType.CHECKING).generate();
+     * String t = MockJutsu.accountType().locale(TR).generate(); // random
+     * }</pre>
+     */
+    public static final class AccountTypeBuilder extends BaseBuilder<AccountTypeBuilder> {
+        private AccountType type = null;
+
+        /**
+         * Sets the account type. If not set, a random type is returned.
+         * <p>Available: {@link AccountType#CHECKING}, {@link AccountType#SAVINGS},
+         * {@link AccountType#CURRENT}, {@link AccountType#BUSINESS_CHECKING},
+         * {@link AccountType#MONEY_MARKET}, {@link AccountType#CD}, {@link AccountType#INVESTMENT}.
+         */
+        public AccountTypeBuilder type(AccountType type) { this.type = type; return this; }
+
+        @Override protected String typeName() { return "account_type"; }
+
+        @Override protected String qualifier() { return type != null ? type.value() : ""; }
     }
 }
