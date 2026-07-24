@@ -1,11 +1,11 @@
-# MockJutsu Core — Java
+# MockJutsu Core - Java
 
 [![Build](https://github.com/altansayan/mock-jutsu-java/actions/workflows/build.yml/badge.svg)](https://github.com/altansayan/mock-jutsu-java/actions)
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.altansayan/mockjutsu-core?label=Maven%20Central)](https://central.sonatype.com/artifact/io.github.altansayan/mockjutsu-core)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Java 17+](https://img.shields.io/badge/Java-17%2B-blue)](https://adoptium.net/)
 
-**Zero-dependency** Java library for generating realistic mock data — 390+ types across identity, financial, telecom, health, IoT, cryptography, and more.
+**Zero-dependency** Java library for generating realistic mock data - 390+ types across identity, financial, telecom, health, IoT, cryptography, and more.
 
 Java port of [Mock Jutsu](https://github.com/altansayan/mock-jutsu-api) (Python/PyPI).
 
@@ -56,7 +56,7 @@ import static io.github.altansayan.mockjutsu.enums.AccountType.*;    // CHECKING
 
 ## Quick Start
 
-### String API — dynamic / scriptable
+### String API - dynamic / scriptable
 
 ```java
 import io.github.altansayan.mockjutsu.MockJutsu;
@@ -77,7 +77,7 @@ String troy  = MockJutsu.generate("cardnum", "TR", "troy");
 List<String> cards = MockJutsu.bulk("cardnum", "TR", 100);
 ```
 
-### Enum API — fully qualified, no static imports needed
+### Enum API - fully qualified, no static imports needed
 
 ```java
 import io.github.altansayan.mockjutsu.MockJutsu;
@@ -92,7 +92,7 @@ String iban  = MockJutsu.generate(DataType.IBAN,     MockJutsuLocale.DE);
 String tckn  = MockJutsu.generate(DataType.TCKN,     MockJutsuLocale.TR);
 ```
 
-### Fluent Builder API — type-safe, IDE autocomplete
+### Fluent Builder API - type-safe, IDE autocomplete
 
 ```java
 import static io.github.altansayan.mockjutsu.enums.MockJutsuLocale.*;
@@ -121,13 +121,13 @@ String name = MockJutsu.fullname()
     .generate();
 ```
 
-### Masker — 1. Mask an existing value
+### Masker - 1. Mask an existing value
 
 ```java
 // PCI DSS (6-digit BIN visible + last 4)
 MockJutsu.masker(DataType.CARDNUM,       "4532015112830366");             // → "4532 01****** 0366"
 
-// ISO/IEC 7812:2017 — 8-digit BIN masking
+// ISO/IEC 7812:2017 - 8-digit BIN masking
 MockJutsu.masker(DataType.CARDNUM_BIN8,  "4532015112830366");             // → "4532 0151 **** 0366"
 
 // KVKK / GDPR
@@ -138,10 +138,10 @@ MockJutsu.masker(DataType.PHONE,        "+905321234567");                 // →
 MockJutsu.masker(DataType.ADDRESS_FULL, "Bagdat Caddesi No:45 Kadikoy"); // → "B*** C*** N*** K***"
 ```
 
-### Masker — 2. Generate + mask in one call
+### Masker - 2. Generate + mask in one call
 
 ```java
-// Generates an algorithmically valid value, then masks it — equivalent to CLI --mask flag
+// Generates an algorithmically valid value, then masks it - equivalent to CLI --mask flag
 MockJutsu.generateMasked(DataType.CARDNUM,       TR); // → "4532 01****** 0366"       (PCI DSS)
 MockJutsu.generateMasked(DataType.TCKN,          TR); // → "47*******83"              (KVKK)
 MockJutsu.generateMasked(DataType.IBAN,          DE); // → "DE89 **** **** **** 1326" (SEPA)
@@ -218,7 +218,7 @@ MockJutsu.generateMasked(DataType.SSN,           US); // → "***-**-6789"      
 
 ## Related
 
-- **Python / CLI / API**: [mock-jutsu-api](https://github.com/altansayan/mock-jutsu-api) — `pip install mockjutsu`
+- **Python / CLI / API**: [mock-jutsu-api](https://github.com/altansayan/mock-jutsu-api) - `pip install mockjutsu`
 - **JMeter Plugin**: [mock-jutsu-jmeter](https://github.com/altansayan/mock-jutsu-jmeter)
 - **PyPI**: [mockjutsu](https://pypi.org/project/mockjutsu/)
 
@@ -251,6 +251,6 @@ Mock Jutsu is **free and open-source**. If it saved you hours of test data setup
 
 If mock-jutsu-java saved you from debugging a "valid-looking but broken" test ID, please leave a ⭐!
 
-Released under the [MIT License](LICENSE) • Copyright © 2026 [Altan Sezer Ayan — A.S.A](https://github.com/altansayan)
+Released under the [MIT License](LICENSE) • Copyright © 2026 [Altan Sezer Ayan - A.S.A](https://github.com/altansayan)
 
 </div>
