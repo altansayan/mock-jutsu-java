@@ -1,0 +1,79 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'signing'
+}
+
+group = 'io.github.altansayan'
+version = '1.0.0-SNAPSHOT'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+    withSourcesJar()
+    withJavadocJar()
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = 'io.github.altansayan'
+            artifactId = 'mockjutsu-core'
+            from components.java
+
+            pom {
+                name = 'MockJutsu Core'
+                description = 'Zero-dependency Java library for generating realistic mock data — 390+ types.'
+                url = 'https://github.com/altansayan/mock-jutsu-java'
+                licenses {
+                    license {
+                        name = 'MIT License'
+                        url = 'https://opensource.org/licenses/MIT'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'altansayan'
+                        name = 'Altan Sezer Ayan'
+                        email = 'altansezerayan@gmail.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/altansayan/mock-jutsu-java.git'
+                    developerConnection = 'scm:git:ssh://github.com/altansayan/mock-jutsu-java.git'
+                    url = 'https://github.com/altansayan/mock-jutsu-java'
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = 'OSSRH'
+            url = version.endsWith('SNAPSHOT')
+                ? 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
+                : 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
+            credentials {
+                username = findProperty('ossrhUsername') ?: System.getenv('OSSRH_USERNAME')
+                password = findProperty('ossrhPassword') ?: System.getenv('OSSRH_PASSWORD')
+            }
+        }
+    }
+}
+
+signing {
+    required { !version.endsWith('SNAPSHOT') && gradle.taskGraph.hasTask('publish') }
+    sign publishing.publications.mavenJava
+}

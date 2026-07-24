@@ -1,0 +1,30 @@
+# Build outputs
+target/
+build/
+out/
+*.class
+*.jar
+
+# Gradle
+.gradle/
+gradle/wrapper/gradle-wrapper.jar
+
+# IDE
+.idea/
+*.iml
+.project
+.classpath
+.settings/
+*.code-workspace
+
+# Maven
+.mvn/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Secrets
+*.p12
+*.gpg
+secring.gpg
