@@ -196,11 +196,27 @@ public final class MockJutsu {
      * String troy = MockJutsu.generate(CARDNUM, TR, TROY);
      * }</pre>
      *
+     * <p><b>Available locales</b> ({@link MockJutsuLocale}):
+     * {@code TR} · {@code DE} · {@code US} · {@code GB} · {@code FR} · {@code RU}
+     * · {@code JP} · {@code CN} · {@code IN} · {@code BR} · {@code ES} · {@code IT}
+     * · {@code MX} · {@code AU} · {@code CA} · {@code PL} · {@code NL} · …
+     *
+     * <p><b>Available networks</b> ({@link Network}):
+     * {@code VISA} · {@code MC} · {@code AMEX} · {@code TROY} · {@code MIR}
+     * · {@code JCB} · {@code DISCOVER} · {@code UNIONPAY} · {@code MAESTRO}
+     *
+     * <p><b>Tip (VS Code):</b> Press {@code Ctrl+Space} after the comma to see
+     * all available enum values via autocomplete. Press {@code F12} on {@code TR}
+     * or {@code VISA} to jump to the full enum definition.
+     *
      * @param type    the data type enum constant; only {@link DataType#CARDNUM} uses the network
-     * @param locale  the locale enum constant
-     * @param network the card network; {@code null} uses the locale default
+     * @param locale  the locale — see {@link MockJutsuLocale} for all supported countries
+     * @param network the card network — see {@link Network} for all supported schemes;
+     *                {@code null} uses the locale default
      * @return a non-null Luhn-valid card number string
      * @since 1.0.0
+     * @see Network
+     * @see MockJutsuLocale
      * @see CardnumBuilder
      */
     public static String generate(DataType type, MockJutsuLocale locale, Network network) {

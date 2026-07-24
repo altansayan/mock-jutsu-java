@@ -1,14 +1,38 @@
 package io.github.altansayan.mockjutsu.enums;
 
 /**
- * Payment card network identifiers for card number generation.
+ * Payment card network identifiers for {@code cardnum} type generation.
+ *
+ * <p><b>All 9 supported networks:</b>
+ * <ul>
+ *   <li>{@link #VISA}     — 16-digit, starts with {@code 4}</li>
+ *   <li>{@link #MC}       — 16-digit, starts with {@code 51-55} or {@code 2221-2720}</li>
+ *   <li>{@link #AMEX}     — 15-digit, starts with {@code 34} or {@code 37}</li>
+ *   <li>{@link #TROY}     — 16-digit, starts with {@code 9792} (Turkey)</li>
+ *   <li>{@link #MIR}      — 16-digit, starts with {@code 2200-2204} (Russia)</li>
+ *   <li>{@link #JCB}      — 16-digit, starts with {@code 3528-3589} (Japan)</li>
+ *   <li>{@link #DISCOVER} — 16-digit, starts with {@code 6011} or {@code 65}</li>
+ *   <li>{@link #UNIONPAY} — 16-digit, starts with {@code 62} (China)</li>
+ *   <li>{@link #MAESTRO}  — 13-19 digit, starts with {@code 6304}</li>
+ * </ul>
+ *
+ * <p><b>Tip (VS Code):</b> Press {@code Ctrl+Space} at the network parameter position
+ * to see all values via autocomplete, or press {@code F12} on {@code VISA} / {@code MC}
+ * to jump to this enum and browse all options.
  *
  * <p>Usage:
  * <pre>{@code
+ * import static io.github.altansayan.mockjutsu.enums.DataType.*;
+ * import static io.github.altansayan.mockjutsu.enums.MockJutsuLocale.*;
  * import static io.github.altansayan.mockjutsu.enums.Network.*;
  *
- * String visa = MockJutsu.cardnum().locale("TR").network(VISA).generate();
- * String amex = MockJutsu.cardnum().locale("US").network(AMEX).generate();
+ * String visa = MockJutsu.generate(CARDNUM, TR, VISA);   // 4...
+ * String mc   = MockJutsu.generate(CARDNUM, DE, MC);     // 5...
+ * String amex = MockJutsu.generate(CARDNUM, US, AMEX);   // 3... (15-digit)
+ * String troy = MockJutsu.generate(CARDNUM, TR, TROY);   // 9792...
+ *
+ * // Builder API
+ * String card = MockJutsu.cardnum().locale(TR).network(VISA).generate();
  * }</pre>
  *
  * @since 1.0.0
