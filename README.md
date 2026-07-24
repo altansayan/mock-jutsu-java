@@ -77,6 +77,21 @@ String troy  = MockJutsu.generate("cardnum", "TR", "troy");
 List<String> cards = MockJutsu.bulk("cardnum", "TR", 100);
 ```
 
+### Enum API — fully qualified, no static imports needed
+
+```java
+import io.github.altansayan.mockjutsu.MockJutsu;
+import io.github.altansayan.mockjutsu.enums.DataType;
+import io.github.altansayan.mockjutsu.enums.MockJutsuLocale;
+import io.github.altansayan.mockjutsu.enums.Network;
+import io.github.altansayan.mockjutsu.enums.Gender;
+
+String card  = MockJutsu.generate(DataType.CARDNUM,  MockJutsuLocale.TR, Network.VISA);
+String name  = MockJutsu.generate(DataType.FULLNAME, MockJutsuLocale.TR, Gender.MALE);
+String iban  = MockJutsu.generate(DataType.IBAN,     MockJutsuLocale.DE);
+String tckn  = MockJutsu.generate(DataType.TCKN,     MockJutsuLocale.TR);
+```
+
 ### Fluent Builder API — type-safe, IDE autocomplete
 
 ```java
