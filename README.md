@@ -37,6 +37,7 @@ implementation 'io.github.altansayan:mockjutsu-core:1.0.0'
 
 ```java
 import io.github.altansayan.mockjutsu.MockJutsu;
+import java.util.List;
 
 // Identity
 String tckn  = MockJutsu.generate("tckn",  "TR");   // 11-digit Turkish national ID
