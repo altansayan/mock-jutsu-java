@@ -208,10 +208,12 @@ MockJutsu.generateMasked(DataType.SSN,           US); // → "***-**-6789"      
 
 ---
 
+<div align="center">
+
 ## Supported Locales
 
 | Locale | Language | HOW-TO |
-|--------|----------|--------|
+|:------:|:--------:|:------:|
 | **TR** | Türkçe | [View docs](https://altansayan.github.io/mock-jutsu-api/HOW-TO/TR/HOW-TO-MockJutsu-TR.html) |
 | **US** | English (US) | [View docs](https://altansayan.github.io/mock-jutsu-api/HOW-TO/US/HOW-TO-MockJutsu-US.html) |
 | **GB** | English (UK) | [View docs](https://altansayan.github.io/mock-jutsu-api/HOW-TO/GB/HOW-TO-MockJutsu-GB.html) |
@@ -219,12 +221,16 @@ MockJutsu.generateMasked(DataType.SSN,           US); // → "***-**-6789"      
 | **FR** | Français | [View docs](https://altansayan.github.io/mock-jutsu-api/HOW-TO/FR/HOW-TO-MockJutsu-FR.html) |
 | **RU** | Русский | [View docs](https://altansayan.github.io/mock-jutsu-api/HOW-TO/RU/HOW-TO-MockJutsu-RU.html) |
 
+</div>
+
 ---
+
+<div align="center">
 
 ## Algorithm Guarantees
 
 | Algorithm | Standard | Status |
-|-----------|----------|--------|
+|:---------:|:--------:|:------:|
 | Luhn | ISO/IEC 7812 | ✅ Verified |
 | IBAN MOD-97 | ISO 13616 | ✅ Verified |
 | TCKN | Turkish MERNİS | ✅ Verified |
@@ -241,6 +247,8 @@ MockJutsu.generateMasked(DataType.SSN,           US); // → "***-**-6789"      
 | BTC Base58Check | BIP-16 | ✅ Verified |
 | ETH EIP-55 | EIP-55 | ✅ Verified |
 | MRZ check digit | ICAO 9303 | ✅ Verified |
+
+</div>
 
 ---
 
