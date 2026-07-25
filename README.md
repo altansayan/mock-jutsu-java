@@ -210,7 +210,14 @@ MockJutsu.generateMasked(DataType.SSN,           US); // → "***-**-6789"      
 
 ## Supported Locales
 
-`TR` `US` `DE` `GB` `FR` `ES` `IT` `NL` `PT` `PL` `RU` `UA` `IN` `CN` `JP` `KR` `BR` `AU` `CA` `MX` `SE` `DK` `NO` `FI` `AR` `CL` `CO` `ZA` `SG` `MY` `TH` `EG` `IL` `RO` `HR` `BG` `LT` `EE` `NZ` `PK`
+| Locale | Language | HOW-TO |
+|--------|----------|--------|
+| **TR** | Türkçe | [View docs](https://altansayan.github.io/mock-jutsu-api/HOW-TO/TR/HOW-TO-MockJutsu-TR.html) |
+| **US** | English (US) | [View docs](https://altansayan.github.io/mock-jutsu-api/HOW-TO/US/HOW-TO-MockJutsu-US.html) |
+| **GB** | English (UK) | [View docs](https://altansayan.github.io/mock-jutsu-api/HOW-TO/GB/HOW-TO-MockJutsu-GB.html) |
+| **DE** | Deutsch | [View docs](https://altansayan.github.io/mock-jutsu-api/HOW-TO/DE/HOW-TO-MockJutsu-DE.html) |
+| **FR** | Français | [View docs](https://altansayan.github.io/mock-jutsu-api/HOW-TO/FR/HOW-TO-MockJutsu-FR.html) |
+| **RU** | Русский | [View docs](https://altansayan.github.io/mock-jutsu-api/HOW-TO/RU/HOW-TO-MockJutsu-RU.html) |
 
 ---
 
