@@ -292,6 +292,7 @@ Generated data is **entirely synthetic** and for development/testing environment
 - Generated IBANs, card numbers, and national IDs are mathematically valid but **do not belong to real entities**.
 
 ---
+<div align="center">
 
 ## 💝 Support Mock Jutsu
 
